@@ -10,7 +10,7 @@ class FileRepositoryImpl implements FileRepository{
   FileRepositoryImpl(this._imagePicker);
 
   @override
-  Future<Either<Failure, XFile?>> pickImage(ImageSource imageSource) async{
+  Future<Either<Failure, XFile>> pickImage(ImageSource imageSource) async{
     try{
       XFile? file = await _imagePicker.pickImage(source: imageSource);
       if(file == null) throw NoFileSelectedFailure();
@@ -19,6 +19,21 @@ class FileRepositoryImpl implements FileRepository{
       return Left(f);
     }catch (e){
       return Left(Failure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, XFile>> retrieveLostImage() async {
+    final LostDataResponse response =
+        await _imagePicker.retrieveLostData();
+    if (response.isEmpty) {
+      return Left(NoFileSelectedFailure());
+    }
+    if (response.file != null) {
+      XFile? xFile = response.file;
+      return Right(xFile!);
+    } else {
+      return Left(Failure(response.exception.toString()));
     }
   }
 }

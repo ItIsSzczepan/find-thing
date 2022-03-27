@@ -1,4 +1,5 @@
 import 'package:dartz/dartz.dart';
+import 'package:find_thing/src/core/failure.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:find_thing/src/domain/repositories/file_repository.dart';
 import 'package:find_thing/src/domain/use_cases/user_pick_image_use_case.dart';
@@ -35,11 +36,11 @@ void main() {
   test("should return null", () async {
     reset(fakeFileRepository);
     when(fakeFileRepository.pickImage(ImageSource.gallery))
-        .thenAnswer((realInvocation) async => Right(null));
+        .thenAnswer((realInvocation) async => Left(NoFileSelectedFailure()));
 
     final result = await useCase(params: ImageSource.gallery);
 
-    expect(result, Right(null));
+    expect(result, Left(NoFileSelectedFailure()));
     verify(fakeFileRepository.pickImage(ImageSource.gallery));
     verifyNoMoreInteractions(fakeFileRepository);
   });

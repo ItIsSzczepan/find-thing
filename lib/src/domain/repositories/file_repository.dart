@@ -4,5 +4,7 @@ import 'package:image_picker/image_picker.dart';
 
 abstract class FileRepository{
   // image picker
-  Future<Either<Failure, XFile?>> pickImage(ImageSource imageSource);
+  Future<Either<Failure, XFile>> pickImage(ImageSource imageSource);
+
+  Future<Either<Failure, XFile>> retrieveLostImage();
 }

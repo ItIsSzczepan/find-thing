@@ -1,6 +1,7 @@
 import 'package:dartz/dartz.dart';
 import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/data/repositories/file_repository_impl.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:mockito/annotations.dart';
@@ -53,6 +54,46 @@ void main() {
 
       expect(result, Left(Failure(exception.toString())));
       verify(fakeImagePicker.pickImage(source: ImageSource.gallery));
+      verifyNoMoreInteractions(fakeImagePicker);
+    });
+  });
+
+  group("retrieve lost image", () {
+    test("should return file", () async {
+      var testLostData = LostDataResponse(file: exampleFile);
+
+      when(fakeImagePicker.retrieveLostData())
+          .thenAnswer((_) async => testLostData);
+
+      final result = await fileRepositoryImpl.retrieveLostImage();
+
+      expect(result, Right(exampleFile));
+      verify(fakeImagePicker.retrieveLostData());
+      verifyNoMoreInteractions(fakeImagePicker);
+    });
+
+    test("should return null failure", () async {
+      reset(fakeImagePicker);
+      when(fakeImagePicker.retrieveLostData())
+          .thenAnswer((_) async => LostDataResponse.empty());
+
+      final result = await fileRepositoryImpl.retrieveLostImage();
+
+      expect(result, Left(NoFileSelectedFailure()));
+      verify(fakeImagePicker.retrieveLostData());
+      verifyNoMoreInteractions(fakeImagePicker);
+    });
+
+    test("should return other failure", () async {
+      PlatformException exception = PlatformException(code: "123");
+
+      reset(fakeImagePicker);
+      when(fakeImagePicker.retrieveLostData()).thenAnswer((_) async => LostDataResponse(exception: exception));
+
+      final result = await fileRepositoryImpl.retrieveLostImage();
+
+      expect(result, Left(Failure(exception.toString())));
+      verify(fakeImagePicker.retrieveLostData());
       verifyNoMoreInteractions(fakeImagePicker);
     });
   });
