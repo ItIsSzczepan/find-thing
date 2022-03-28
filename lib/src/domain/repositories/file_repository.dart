@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:dartz/dartz.dart';
 import 'package:find_thing/src/core/failure.dart';
 import 'package:image_picker/image_picker.dart';
@@ -7,4 +9,6 @@ abstract class FileRepository{
   Future<Either<Failure, XFile>> pickImage(ImageSource imageSource);
 
   Future<Either<Failure, XFile>> retrieveLostImage();
+
+  saveImage({required Image image, required String uid});
 }

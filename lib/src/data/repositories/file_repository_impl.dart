@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:dartz/dartz.dart';
 import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/domain/repositories/file_repository.dart';
@@ -35,5 +37,11 @@ class FileRepositoryImpl implements FileRepository{
     } else {
       return Left(Failure(response.exception.toString()));
     }
+  }
+
+  @override
+  saveImage({required Image image, required String uid}) {
+    // TODO: implement saveImage
+    throw UnimplementedError();
   }
 }

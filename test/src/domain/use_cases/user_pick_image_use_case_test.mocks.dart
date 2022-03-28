@@ -3,6 +3,7 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i4;
+import 'dart:ui' as _i7;
 
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:find_thing/src/core/failure.dart' as _i5;
@@ -43,4 +44,7 @@ class MockFileRepository extends _i1.Mock implements _i3.FileRepository {
               returnValue: Future<_i2.Either<_i5.Failure, _i6.XFile>>.value(
                   _FakeEither_0<_i5.Failure, _i6.XFile>()))
           as _i4.Future<_i2.Either<_i5.Failure, _i6.XFile>>);
+  @override
+  dynamic saveImage({_i7.Image? image, String? uid}) => super.noSuchMethod(
+      Invocation.method(#saveImage, [], {#image: image, #uid: uid}));
 }
