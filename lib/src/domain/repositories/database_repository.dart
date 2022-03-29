@@ -1,6 +1,9 @@
 import 'package:find_thing/src/domain/entities/place.dart';
 
 abstract class DatabaseRepository{
-  void savePlace(Place newPlace);
+  Future<Place> createNewPlace({String name});
 
+  Future<void> savePlace(Place place);
+
+  Future<void> removePlace(Place place);
 }
