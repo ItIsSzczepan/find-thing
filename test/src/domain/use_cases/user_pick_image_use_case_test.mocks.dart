@@ -45,6 +45,8 @@ class MockFileRepository extends _i1.Mock implements _i3.FileRepository {
                   _FakeEither_0<_i5.Failure, _i6.XFile>()))
           as _i4.Future<_i2.Either<_i5.Failure, _i6.XFile>>);
   @override
-  dynamic saveImage({_i7.Image? image, String? uid}) => super.noSuchMethod(
-      Invocation.method(#saveImage, [], {#image: image, #uid: uid}));
+  _i4.Future<String> saveImage({_i7.Image? image, String? uid}) =>
+      (super.noSuchMethod(
+          Invocation.method(#saveImage, [], {#image: image, #uid: uid}),
+          returnValue: Future<String>.value('')) as _i4.Future<String>);
 }

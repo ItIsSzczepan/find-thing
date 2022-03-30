@@ -37,7 +37,7 @@ void main() {
     // save image mock
     when(_fileRepository.saveImage(
             image: anyNamed('image'), uid: anyNamed('uid')))
-        .thenAnswer((realInvocation) {
+        .thenAnswer((realInvocation) async {
       testFileUid = realInvocation.namedArguments[const Symbol('uid')];
       return testFileUid;
     });
@@ -58,6 +58,7 @@ void main() {
 
     expect(result, Right(true));
     expect(testFileUid, testDBUid);
+    verifyNever(_databaseRepository.removePlace(any));
   });
 
   test("should return failure when new place can't be created", () async {
@@ -95,11 +96,32 @@ void main() {
             image: await createTestImage(), name: "test_image"));
 
     expect(result, Left(Failure("StdoutException: can't save image")));
-    verify(_databaseRepository.removePlace(any));
+    verify(_databaseRepository.removePlace(any)).called(1);
   });
 
   test("should return failure when can't place in db again", ()async{
-    // TODO: write test
-    throw UnimplementedError();
+    reset(_databaseRepository);
+    // create new place mock
+    when(_databaseRepository.createNewPlace(name: anyNamed('name'))).thenAnswer(
+            (realInvocation) async => Place(
+            name: realInvocation.namedArguments[const Symbol('name')],
+            id: 1,
+            uid: "123123123"));
+    // save image mock
+    when(_fileRepository.saveImage(
+        image: anyNamed('image'), uid: anyNamed('uid')))
+        .thenAnswer((realInvocation) async => realInvocation.namedArguments[const Symbol('uid')]);
+    // save place mock
+    when(_databaseRepository.savePlace(any)).thenThrow(Exception("Can't save data to db"));
+    // remove place mock
+    when(_databaseRepository.removePlace(any))
+        .thenAnswer((realInvocation)async{});
+
+    final result = await useCase(
+        params: SaveImageParams(
+            image: await createTestImage(), name: "test_image"));
+
+    expect(result, Left(Failure("Exception: Can't save data to db")));
+    verify(_databaseRepository.removePlace(any)).called(1);
   });
 }
