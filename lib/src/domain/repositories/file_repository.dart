@@ -11,4 +11,6 @@ abstract class FileRepository{
   Future<Either<Failure, XFile>> retrieveLostImage();
 
   Future<String> saveImage({required Image image, required String uid});
+
+  Future<void> deleteImage(String path);
 }

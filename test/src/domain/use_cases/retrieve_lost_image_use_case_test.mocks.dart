@@ -49,4 +49,9 @@ class MockFileRepository extends _i1.Mock implements _i3.FileRepository {
       (super.noSuchMethod(
           Invocation.method(#saveImage, [], {#image: image, #uid: uid}),
           returnValue: Future<String>.value('')) as _i4.Future<String>);
+  @override
+  _i4.Future<void> deleteImage(String? path) =>
+      (super.noSuchMethod(Invocation.method(#deleteImage, [path]),
+          returnValue: Future<void>.value(),
+          returnValueForMissingStub: Future<void>.value()) as _i4.Future<void>);
 }
