@@ -50,6 +50,7 @@ void main() {
     // save place mock
     when(_databaseRepository.savePlace(any)).thenAnswer((realInvocation) async {
       testDBUid = realInvocation.positionalArguments[0].uid;
+      return realInvocation.positionalArguments[0].id;
     });
 
     final result = await useCase(
@@ -89,7 +90,7 @@ void main() {
         .thenThrow(const StdoutException("can't save image"));
     // remove place mock
     when(_databaseRepository.removePlace(any))
-        .thenAnswer((realInvocation)async{});
+        .thenAnswer((realInvocation)async => true);
 
     final result = await useCase(
         params: SaveImageParams(
@@ -115,7 +116,7 @@ void main() {
     when(_databaseRepository.savePlace(any)).thenThrow(Exception("Can't save data to db"));
     // remove place mock
     when(_databaseRepository.removePlace(any))
-        .thenAnswer((realInvocation)async{});
+        .thenAnswer((realInvocation)async => true);
 
     final result = await useCase(
         params: SaveImageParams(

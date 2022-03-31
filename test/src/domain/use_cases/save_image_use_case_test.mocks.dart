@@ -76,13 +76,11 @@ class MockDatabaseRepository extends _i1.Mock
               returnValue: Future<_i3.Place>.value(_FakePlace_1()))
           as _i5.Future<_i3.Place>);
   @override
-  _i5.Future<void> savePlace(_i3.Place? place) =>
+  _i5.Future<int> savePlace(_i3.Place? place) =>
       (super.noSuchMethod(Invocation.method(#savePlace, [place]),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i5.Future<void>);
+          returnValue: Future<int>.value(0)) as _i5.Future<int>);
   @override
-  _i5.Future<void> removePlace(_i3.Place? place) =>
-      (super.noSuchMethod(Invocation.method(#removePlace, [place]),
-          returnValue: Future<void>.value(),
-          returnValueForMissingStub: Future<void>.value()) as _i5.Future<void>);
+  _i5.Future<bool> removePlace(int? id) =>
+      (super.noSuchMethod(Invocation.method(#removePlace, [id]),
+          returnValue: Future<bool>.value(false)) as _i5.Future<bool>);
 }

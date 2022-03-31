@@ -89,13 +89,7 @@ ModelDefinition getObjectBoxModel() {
         toManyRelations: (Place object) => {},
         getId: (Place object) => object.id,
         setId: (Place object, int id) {
-          if (object.id != id) {
-            throw ArgumentError('Field Place.id is read-only '
-                '(final or getter-only) and it was declared to be self-assigned. '
-                'However, the currently inserted object (.id=${object.id}) '
-                "doesn't match the inserted ID (ID $id). "
-                'You must assign an ID before calling [box.put()].');
-          }
+          object.id = id;
         },
         objectToFB: (Place object, fb.Builder fbb) {
           final uidOffset =
@@ -105,20 +99,19 @@ ModelDefinition getObjectBoxModel() {
               ? null
               : fbb.writeString(object.fileLocation!);
           fbb.startTable(5);
-          fbb.addInt64(0, object.id ?? 0);
+          fbb.addInt64(0, object.id);
           fbb.addOffset(1, uidOffset);
           fbb.addOffset(2, nameOffset);
           fbb.addOffset(3, fileLocationOffset);
           fbb.finish(fbb.endTable());
-          return object.id ?? 0;
+          return object.id;
         },
         objectFromFB: (Store store, ByteData fbData) {
           final buffer = fb.BufferContext(fbData);
           final rootOffset = buffer.derefObject(0);
 
           final object = Place(
-              id: const fb.Int64Reader()
-                  .vTableGetNullable(buffer, rootOffset, 4),
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
               uid: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 6),
               name: const fb.StringReader(asciiOptimization: true)

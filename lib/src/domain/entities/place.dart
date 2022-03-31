@@ -1,15 +1,19 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:objectbox/objectbox.dart';
+import 'package:uuid/uuid.dart';
 
-part 'place.freezed.dart';
+@Entity()
+class Place {
+  @Id(assignable: true)
+  late int id;
 
-@Freezed()
-class Place with _$Place {
-  @Entity(realClass: Place)
-  factory Place({
-    @Id(assignable: true) int? id,
-    @Unique(onConflict: ConflictStrategy.replace) String? uid,
-    required String name,
-    String? fileLocation,
-  }) = _Place;
+  @Unique(onConflict: ConflictStrategy.replace)
+  late String? uid;
+
+  late String name;
+  String? fileLocation;
+
+  Place({this.id = 0, String? uid, required this.name, this.fileLocation}){
+    this.uid = uid ?? Uuid().v4();
+  }
 }

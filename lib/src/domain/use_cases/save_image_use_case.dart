@@ -21,12 +21,12 @@ class SaveImageUseCase implements UseCase<bool, SaveImageParams>{
       String uid = newPlace.uid!;
 
       String path = await _fileRepository.saveImage(image: params.image, uid: uid);
-      newPlace = newPlace.copyWith(fileLocation: path);
+      newPlace.fileLocation = path;
       await _databaseRepository.savePlace(newPlace);
 
       return const Right(true);
     }catch (e){
-      if(newPlace != null) _databaseRepository.removePlace(newPlace);
+      if(newPlace != null) _databaseRepository.removePlace(newPlace.id);
       return Left(Failure(e.toString()));
     }
   }
