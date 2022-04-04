@@ -2,7 +2,6 @@ import 'package:find_thing/src/data/data_sources/objectbox_database.dart';
 import 'package:find_thing/src/data/repositories/database_reposiotry_impl.dart';
 import 'package:find_thing/src/domain/entities/place.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:objectbox/objectbox.dart';
 
 import '../../../models.dart';
 

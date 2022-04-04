@@ -6,7 +6,6 @@ import 'package:find_thing/src/core/constant.dart';
 import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/domain/repositories/file_repository.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:image_picker_platform_interface/src/types/image_source.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
 

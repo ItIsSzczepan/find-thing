@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:ui';
 
 import 'package:dartz/dartz.dart';
 import 'package:find_thing/src/core/failure.dart';
@@ -57,7 +56,7 @@ void main() {
         params: SaveImageParams(
             image: await createTestImage(), name: "test_image"));
 
-    expect(result, Right(true));
+    expect(result, const Right(true));
     expect(testFileUid, testDBUid);
     verifyNever(_databaseRepository.removePlace(any));
   });

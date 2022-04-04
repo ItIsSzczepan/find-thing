@@ -13,6 +13,7 @@ import 'package:objectbox/internal.dart'; // generated code can access "internal
 import 'package:objectbox/objectbox.dart';
 import 'package:objectbox_flutter_libs/objectbox_flutter_libs.dart';
 
+import 'src/domain/entities/area.dart';
 import 'src/domain/entities/place.dart';
 
 export 'package:objectbox/objectbox.dart'; // so that callers only have to import this file
@@ -28,7 +29,7 @@ final _entities = <ModelEntity>[
             id: const IdUid(1, 2598118975058114424),
             name: 'id',
             type: 6,
-            flags: 129),
+            flags: 1),
         ModelProperty(
             id: const IdUid(2, 7091305741886185844),
             name: 'uid',
@@ -45,6 +46,64 @@ final _entities = <ModelEntity>[
             name: 'fileLocation',
             type: 9,
             flags: 0)
+      ],
+      relations: <ModelRelation>[],
+      backlinks: <ModelBacklink>[
+        ModelBacklink(name: 'areas', srcEntity: 'Area', srcField: '')
+      ]),
+  ModelEntity(
+      id: const IdUid(4, 3255558706845251369),
+      name: 'Area',
+      lastPropertyId: const IdUid(9, 4715804943357064754),
+      flags: 0,
+      properties: <ModelProperty>[
+        ModelProperty(
+            id: const IdUid(1, 5007624953940246639),
+            name: 'id',
+            type: 6,
+            flags: 1),
+        ModelProperty(
+            id: const IdUid(2, 2775433720477048813),
+            name: 'x',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(3, 4480908518885154137),
+            name: 'y',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(4, 458940005997589863),
+            name: 'width',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(5, 2994178610635669828),
+            name: 'height',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(6, 2860077953889256552),
+            name: 'radius',
+            type: 8,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(7, 4985512076580012222),
+            name: 'content',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(8, 5589736747025579354),
+            name: 'dbShape',
+            type: 6,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(9, 4715804943357064754),
+            name: 'placeId',
+            type: 11,
+            flags: 520,
+            indexId: const IdUid(2, 6686247827379195441),
+            relationTarget: 'Place')
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
@@ -70,14 +129,25 @@ Future<Store> openStore(
 ModelDefinition getObjectBoxModel() {
   final model = ModelInfo(
       entities: _entities,
-      lastEntityId: const IdUid(1, 4635599271720067292),
-      lastIndexId: const IdUid(1, 8582816604463808466),
-      lastRelationId: const IdUid(0, 0),
+      lastEntityId: const IdUid(4, 3255558706845251369),
+      lastIndexId: const IdUid(2, 6686247827379195441),
+      lastRelationId: const IdUid(1, 4501296354599212121),
       lastSequenceId: const IdUid(0, 0),
-      retiredEntityUids: const [],
+      retiredEntityUids: const [775428084693360285, 3791645648957705854],
       retiredIndexUids: const [],
-      retiredPropertyUids: const [],
-      retiredRelationUids: const [],
+      retiredPropertyUids: const [
+        2629230399401996944,
+        5510491821224358697,
+        3941993614756958969,
+        802100703266061108,
+        5818297957259850191,
+        2075265113031708220,
+        4086157473880677269,
+        5776631541906660214,
+        8851870072969683281,
+        6724643547649642146
+      ],
+      retiredRelationUids: const [4501296354599212121],
       modelVersion: 5,
       modelVersionParserMinimum: 5,
       version: 1);
@@ -86,7 +156,11 @@ ModelDefinition getObjectBoxModel() {
     Place: EntityDefinition<Place>(
         model: _entities[0],
         toOneRelations: (Place object) => [],
-        toManyRelations: (Place object) => {},
+        toManyRelations: (Place object) => {
+              RelInfo<Area>.toOneBacklink(
+                      9, object.id, (Area srcObject) => srcObject.place):
+                  object.areas
+            },
         getId: (Place object) => object.id,
         setId: (Place object, int id) {
           object.id = id;
@@ -118,7 +192,59 @@ ModelDefinition getObjectBoxModel() {
                   .vTableGet(buffer, rootOffset, 8, ''),
               fileLocation: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 10));
+          InternalToManyAccess.setRelInfo(
+              object.areas,
+              store,
+              RelInfo<Area>.toOneBacklink(
+                  9, object.id, (Area srcObject) => srcObject.place),
+              store.box<Place>());
+          return object;
+        }),
+    Area: EntityDefinition<Area>(
+        model: _entities[1],
+        toOneRelations: (Area object) => [object.place],
+        toManyRelations: (Area object) => {},
+        getId: (Area object) => object.id,
+        setId: (Area object, int id) {
+          object.id = id;
+        },
+        objectToFB: (Area object, fb.Builder fbb) {
+          final contentOffset =
+              object.content == null ? null : fbb.writeString(object.content!);
+          fbb.startTable(10);
+          fbb.addInt64(0, object.id);
+          fbb.addFloat64(1, object.x);
+          fbb.addFloat64(2, object.y);
+          fbb.addFloat64(3, object.width);
+          fbb.addFloat64(4, object.height);
+          fbb.addFloat64(5, object.radius);
+          fbb.addOffset(6, contentOffset);
+          fbb.addInt64(7, object.dbShape);
+          fbb.addInt64(8, object.place.targetId);
+          fbb.finish(fbb.endTable());
+          return object.id;
+        },
+        objectFromFB: (Store store, ByteData fbData) {
+          final buffer = fb.BufferContext(fbData);
+          final rootOffset = buffer.derefObject(0);
 
+          final object = Area(
+              id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              content: const fb.StringReader(asciiOptimization: true)
+                  .vTableGetNullable(buffer, rootOffset, 16),
+              x: const fb.Float64Reader().vTableGet(buffer, rootOffset, 6, 0),
+              y: const fb.Float64Reader().vTableGet(buffer, rootOffset, 8, 0),
+              width: const fb.Float64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 10),
+              height: const fb.Float64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 12),
+              radius: const fb.Float64Reader()
+                  .vTableGetNullable(buffer, rootOffset, 14))
+            ..dbShape =
+                const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
+          object.place.targetId =
+              const fb.Int64Reader().vTableGet(buffer, rootOffset, 20, 0);
+          object.place.attach(store);
           return object;
         })
   };
@@ -140,4 +266,35 @@ class Place_ {
   /// see [Place.fileLocation]
   static final fileLocation =
       QueryStringProperty<Place>(_entities[0].properties[3]);
+}
+
+/// [Area] entity fields to define ObjectBox queries.
+class Area_ {
+  /// see [Area.id]
+  static final id = QueryIntegerProperty<Area>(_entities[1].properties[0]);
+
+  /// see [Area.x]
+  static final x = QueryDoubleProperty<Area>(_entities[1].properties[1]);
+
+  /// see [Area.y]
+  static final y = QueryDoubleProperty<Area>(_entities[1].properties[2]);
+
+  /// see [Area.width]
+  static final width = QueryDoubleProperty<Area>(_entities[1].properties[3]);
+
+  /// see [Area.height]
+  static final height = QueryDoubleProperty<Area>(_entities[1].properties[4]);
+
+  /// see [Area.radius]
+  static final radius = QueryDoubleProperty<Area>(_entities[1].properties[5]);
+
+  /// see [Area.content]
+  static final content = QueryStringProperty<Area>(_entities[1].properties[6]);
+
+  /// see [Area.dbShape]
+  static final dbShape = QueryIntegerProperty<Area>(_entities[1].properties[7]);
+
+  /// see [Area.place]
+  static final place =
+      QueryRelationToOne<Area, Place>(_entities[1].properties[8]);
 }

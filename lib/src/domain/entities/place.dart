@@ -1,10 +1,10 @@
-import 'package:freezed_annotation/freezed_annotation.dart';
+import 'package:find_thing/src/domain/entities/area.dart';
 import 'package:objectbox/objectbox.dart';
 import 'package:uuid/uuid.dart';
 
 @Entity()
 class Place {
-  @Id(assignable: true)
+  @Id()
   late int id;
 
   @Unique(onConflict: ConflictStrategy.replace)
@@ -13,7 +13,11 @@ class Place {
   late String name;
   String? fileLocation;
 
+  @Backlink()
+  final areas = ToMany<Area>();
+
   Place({this.id = 0, String? uid, required this.name, this.fileLocation}){
+    // ignore: prefer_const_constructors
     this.uid = uid ?? Uuid().v4();
   }
 }
