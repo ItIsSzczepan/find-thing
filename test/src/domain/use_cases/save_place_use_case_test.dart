@@ -6,28 +6,23 @@ import 'package:find_thing/src/core/params.dart';
 import 'package:find_thing/src/domain/entities/place.dart';
 import 'package:find_thing/src/domain/repositories/database_repository.dart';
 import 'package:find_thing/src/domain/repositories/file_repository.dart';
-import 'package:find_thing/src/domain/use_cases/save_image_use_case.dart';
-import 'package:flutter/material.dart';
+import 'package:find_thing/src/domain/use_cases/save_place_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import 'save_image_use_case_test.mocks.dart';
-
-String saveImageNull({required Image? image, required String? uid}) {
-  return uid!;
-}
+import 'save_place_use_case_test.mocks.dart';
 
 @GenerateMocks([FileRepository, DatabaseRepository])
 void main() {
   late MockFileRepository _fileRepository;
   late MockDatabaseRepository _databaseRepository;
-  late SaveImageUseCase useCase;
+  late SavePlaceUseCase useCase;
 
   setUp(() {
     _fileRepository = MockFileRepository();
     _databaseRepository = MockDatabaseRepository();
-    useCase = SaveImageUseCase(_fileRepository, _databaseRepository);
+    useCase = SavePlaceUseCase(_fileRepository, _databaseRepository);
   });
 
   test("file and database repositories should get the same uid", () async {
