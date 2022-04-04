@@ -4,6 +4,7 @@
 
 import 'dart:async' as _i4;
 
+import 'package:find_thing/src/domain/entities/area.dart' as _i5;
 import 'package:find_thing/src/domain/entities/place.dart' as _i2;
 import 'package:find_thing/src/domain/repositories/database_repository.dart'
     as _i3;
@@ -42,5 +43,19 @@ class MockDatabaseRepository extends _i1.Mock
   @override
   _i4.Future<bool> removePlace(int? id) =>
       (super.noSuchMethod(Invocation.method(#removePlace, [id]),
+          returnValue: Future<bool>.value(false)) as _i4.Future<bool>);
+  @override
+  _i4.Future<_i4.Stream<dynamic>> getPlacesStream() =>
+      (super.noSuchMethod(Invocation.method(#getPlacesStream, []),
+              returnValue:
+                  Future<_i4.Stream<dynamic>>.value(Stream<dynamic>.empty()))
+          as _i4.Future<_i4.Stream<dynamic>>);
+  @override
+  _i4.Future<int> saveArea(_i5.Area? area) =>
+      (super.noSuchMethod(Invocation.method(#saveArea, [area]),
+          returnValue: Future<int>.value(0)) as _i4.Future<int>);
+  @override
+  _i4.Future<bool> removeArea(int? id) =>
+      (super.noSuchMethod(Invocation.method(#removeArea, [id]),
           returnValue: Future<bool>.value(false)) as _i4.Future<bool>);
 }

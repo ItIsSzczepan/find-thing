@@ -1,4 +1,5 @@
 import 'package:find_thing/src/data/data_sources/objectbox_database.dart';
+import 'package:find_thing/src/domain/entities/area.dart';
 import 'package:find_thing/src/domain/entities/place.dart';
 import 'package:find_thing/src/domain/repositories/database_repository.dart';
 
@@ -30,6 +31,22 @@ class DatabaseRepositoryImpl extends DatabaseRepository {
 
   @override
   Future<bool> removePlace(int id) async {
-    return _objectBoxDatabase.placeDao.remove(id);
+    return _objectBoxDatabase.removePlaceWithAreas(id);
+  }
+
+  @override
+  Future<bool> removeArea(int id) async{
+    return _objectBoxDatabase.areaDao.remove(id);
+  }
+
+  @override
+  Future<int> saveArea(Area area) async{
+    if(area.place.target == null) throw(Exception("Can't save area without target place"));
+    return _objectBoxDatabase.areaDao.save(area);
+  }
+
+  @override
+  Future<Stream> getPlacesStream() async{
+    return _objectBoxDatabase.placeDao.allPlacesStream;
   }
 }
