@@ -1,0 +1,122 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:4635599271720067292",
+      "lastPropertyId": "4:4238998201203533351",
+      "name": "Place",
+      "properties": [
+        {
+          "id": "1:2598118975058114424",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:7091305741886185844",
+          "name": "uid",
+          "type": 9,
+          "flags": 34848,
+          "indexId": "1:8582816604463808466"
+        },
+        {
+          "id": "3:4592830757626326087",
+          "name": "name",
+          "type": 9
+        },
+        {
+          "id": "4:4238998201203533351",
+          "name": "fileLocation",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "4:3255558706845251369",
+      "lastPropertyId": "9:4715804943357064754",
+      "name": "Area",
+      "properties": [
+        {
+          "id": "1:5007624953940246639",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2775433720477048813",
+          "name": "x",
+          "type": 8
+        },
+        {
+          "id": "3:4480908518885154137",
+          "name": "y",
+          "type": 8
+        },
+        {
+          "id": "4:458940005997589863",
+          "name": "width",
+          "type": 8
+        },
+        {
+          "id": "5:2994178610635669828",
+          "name": "height",
+          "type": 8
+        },
+        {
+          "id": "6:2860077953889256552",
+          "name": "radius",
+          "type": 8
+        },
+        {
+          "id": "7:4985512076580012222",
+          "name": "content",
+          "type": 9
+        },
+        {
+          "id": "8:5589736747025579354",
+          "name": "dbShape",
+          "type": 6
+        },
+        {
+          "id": "9:4715804943357064754",
+          "name": "placeId",
+          "type": 11,
+          "flags": 520,
+          "indexId": "2:6686247827379195441",
+          "relationTarget": "Place"
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "4:3255558706845251369",
+  "lastIndexId": "2:6686247827379195441",
+  "lastRelationId": "1:4501296354599212121",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    775428084693360285,
+    3791645648957705854
+  ],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [
+    2629230399401996944,
+    5510491821224358697,
+    3941993614756958969,
+    802100703266061108,
+    5818297957259850191,
+    2075265113031708220,
+    4086157473880677269,
+    5776631541906660214,
+    8851870072969683281,
+    6724643547649642146
+  ],
+  "retiredRelationUids": [
+    4501296354599212121
+  ],
+  "version": 1
+}
