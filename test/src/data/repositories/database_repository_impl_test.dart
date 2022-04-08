@@ -97,8 +97,8 @@ void main(){
         counts.add((event as Query<Place>).count());
       });
 
-      await objectBoxDatabase.placeDao.save(Place(name: Uuid().v1()));
-      await objectBoxDatabase.placeDao.save(Place(name: Uuid().v1()));
+      await objectBoxDatabase.placeDao.save(Place(name: const Uuid().v1()));
+      await objectBoxDatabase.placeDao.save(Place(name: const Uuid().v1()));
       await Future.delayed(const Duration(seconds: 1));
       expect(counts.last, counts.first + 1);
       sub.cancel();

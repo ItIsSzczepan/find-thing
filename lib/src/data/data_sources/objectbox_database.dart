@@ -3,7 +3,6 @@ import 'package:find_thing/src/data/data_sources/daos/area_dao.dart';
 import 'package:find_thing/src/data/data_sources/daos/place_dao.dart';
 import 'package:find_thing/src/domain/entities/area.dart';
 import 'package:find_thing/src/domain/entities/place.dart';
-import 'package:objectbox/objectbox.dart';
 
 class ObjectBoxDatabase{
   late final Store _store;
