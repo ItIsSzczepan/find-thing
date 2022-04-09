@@ -6,11 +6,11 @@ import 'package:find_thing/src/domain/entities/place.dart';
 import 'package:find_thing/src/domain/repositories/database_repository.dart';
 import 'package:find_thing/src/domain/repositories/file_repository.dart';
 
-class SaveImageUseCase implements UseCase<bool, SaveImageParams>{
+class SavePlaceUseCase implements UseCase<bool, SaveImageParams>{
   final FileRepository _fileRepository;
   final DatabaseRepository _databaseRepository;
 
-  SaveImageUseCase(this._fileRepository, this._databaseRepository);
+  SavePlaceUseCase(this._fileRepository, this._databaseRepository);
 
   @override
   Future<Either<Failure, bool>> call({required params}) async {
