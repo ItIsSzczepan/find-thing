@@ -21,10 +21,10 @@ class PermissionCubit extends Cubit<PermissionCubitState> {
   }
 
   _editData(Permissions name, PermissionStatus newValue){
-    if(state is Data){
-      Map<Permissions, PermissionStatus> stateMap = (state as Data).permissions;
+    if(state is PermissionData){
+      Map<Permissions, PermissionStatus> stateMap = (state as PermissionData).permissions;
       stateMap[name] = newValue;
-      (state as Data).copyWith(permissions: stateMap);
+      (state as PermissionData).copyWith(permissions: stateMap);
     }else{
       emit(PermissionCubitState.data(permissions: {name: newValue}));
     }

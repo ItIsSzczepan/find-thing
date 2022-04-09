@@ -17,18 +17,19 @@ final _privateConstructorUsedError = UnsupportedError(
 class _$PermissionCubitStateTearOff {
   const _$PermissionCubitStateTearOff();
 
-  Initial initial() {
-    return const Initial();
+  PermissionInitial initial() {
+    return const PermissionInitial();
   }
 
-  Data data({required Map<Permissions, PermissionStatus> permissions}) {
-    return Data(
+  PermissionData data(
+      {required Map<Permissions, PermissionStatus> permissions}) {
+    return PermissionData(
       permissions: permissions,
     );
   }
 
-  FailureState failure({required Failure failure}) {
-    return FailureState(
+  PermissionFailure failure({required Failure failure}) {
+    return PermissionFailure(
       failure: failure,
     );
   }
@@ -64,23 +65,23 @@ mixin _$PermissionCubitState {
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Data value) data,
-    required TResult Function(FailureState value) failure,
+    required TResult Function(PermissionInitial value) initial,
+    required TResult Function(PermissionData value) data,
+    required TResult Function(PermissionFailure value) failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Data value)? data,
-    TResult Function(FailureState value)? failure,
+    TResult Function(PermissionInitial value)? initial,
+    TResult Function(PermissionData value)? data,
+    TResult Function(PermissionFailure value)? failure,
   }) =>
       throw _privateConstructorUsedError;
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Data value)? data,
-    TResult Function(FailureState value)? failure,
+    TResult Function(PermissionInitial value)? initial,
+    TResult Function(PermissionData value)? data,
+    TResult Function(PermissionFailure value)? failure,
     required TResult orElse(),
   }) =>
       throw _privateConstructorUsedError;
@@ -104,26 +105,28 @@ class _$PermissionCubitStateCopyWithImpl<$Res>
 }
 
 /// @nodoc
-abstract class $InitialCopyWith<$Res> {
-  factory $InitialCopyWith(Initial value, $Res Function(Initial) then) =
-      _$InitialCopyWithImpl<$Res>;
+abstract class $PermissionInitialCopyWith<$Res> {
+  factory $PermissionInitialCopyWith(
+          PermissionInitial value, $Res Function(PermissionInitial) then) =
+      _$PermissionInitialCopyWithImpl<$Res>;
 }
 
 /// @nodoc
-class _$InitialCopyWithImpl<$Res>
+class _$PermissionInitialCopyWithImpl<$Res>
     extends _$PermissionCubitStateCopyWithImpl<$Res>
-    implements $InitialCopyWith<$Res> {
-  _$InitialCopyWithImpl(Initial _value, $Res Function(Initial) _then)
-      : super(_value, (v) => _then(v as Initial));
+    implements $PermissionInitialCopyWith<$Res> {
+  _$PermissionInitialCopyWithImpl(
+      PermissionInitial _value, $Res Function(PermissionInitial) _then)
+      : super(_value, (v) => _then(v as PermissionInitial));
 
   @override
-  Initial get _value => super._value as Initial;
+  PermissionInitial get _value => super._value as PermissionInitial;
 }
 
 /// @nodoc
 
-class _$Initial implements Initial {
-  const _$Initial();
+class _$PermissionInitial implements PermissionInitial {
+  const _$PermissionInitial();
 
   @override
   String toString() {
@@ -133,7 +136,7 @@ class _$Initial implements Initial {
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is Initial);
+        (other.runtimeType == runtimeType && other is PermissionInitial);
   }
 
   @override
@@ -177,9 +180,9 @@ class _$Initial implements Initial {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Data value) data,
-    required TResult Function(FailureState value) failure,
+    required TResult Function(PermissionInitial value) initial,
+    required TResult Function(PermissionData value) data,
+    required TResult Function(PermissionFailure value) failure,
   }) {
     return initial(this);
   }
@@ -187,9 +190,9 @@ class _$Initial implements Initial {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Data value)? data,
-    TResult Function(FailureState value)? failure,
+    TResult Function(PermissionInitial value)? initial,
+    TResult Function(PermissionData value)? data,
+    TResult Function(PermissionFailure value)? failure,
   }) {
     return initial?.call(this);
   }
@@ -197,9 +200,9 @@ class _$Initial implements Initial {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Data value)? data,
-    TResult Function(FailureState value)? failure,
+    TResult Function(PermissionInitial value)? initial,
+    TResult Function(PermissionData value)? data,
+    TResult Function(PermissionFailure value)? failure,
     required TResult orElse(),
   }) {
     if (initial != null) {
@@ -209,31 +212,34 @@ class _$Initial implements Initial {
   }
 }
 
-abstract class Initial implements PermissionCubitState {
-  const factory Initial() = _$Initial;
+abstract class PermissionInitial implements PermissionCubitState {
+  const factory PermissionInitial() = _$PermissionInitial;
 }
 
 /// @nodoc
-abstract class $DataCopyWith<$Res> {
-  factory $DataCopyWith(Data value, $Res Function(Data) then) =
-      _$DataCopyWithImpl<$Res>;
+abstract class $PermissionDataCopyWith<$Res> {
+  factory $PermissionDataCopyWith(
+          PermissionData value, $Res Function(PermissionData) then) =
+      _$PermissionDataCopyWithImpl<$Res>;
   $Res call({Map<Permissions, PermissionStatus> permissions});
 }
 
 /// @nodoc
-class _$DataCopyWithImpl<$Res> extends _$PermissionCubitStateCopyWithImpl<$Res>
-    implements $DataCopyWith<$Res> {
-  _$DataCopyWithImpl(Data _value, $Res Function(Data) _then)
-      : super(_value, (v) => _then(v as Data));
+class _$PermissionDataCopyWithImpl<$Res>
+    extends _$PermissionCubitStateCopyWithImpl<$Res>
+    implements $PermissionDataCopyWith<$Res> {
+  _$PermissionDataCopyWithImpl(
+      PermissionData _value, $Res Function(PermissionData) _then)
+      : super(_value, (v) => _then(v as PermissionData));
 
   @override
-  Data get _value => super._value as Data;
+  PermissionData get _value => super._value as PermissionData;
 
   @override
   $Res call({
     Object? permissions = freezed,
   }) {
-    return _then(Data(
+    return _then(PermissionData(
       permissions: permissions == freezed
           ? _value.permissions
           : permissions // ignore: cast_nullable_to_non_nullable
@@ -244,8 +250,8 @@ class _$DataCopyWithImpl<$Res> extends _$PermissionCubitStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$Data implements Data {
-  const _$Data({required this.permissions});
+class _$PermissionData implements PermissionData {
+  const _$PermissionData({required this.permissions});
 
   @override
   final Map<Permissions, PermissionStatus> permissions;
@@ -259,7 +265,7 @@ class _$Data implements Data {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is Data &&
+            other is PermissionData &&
             const DeepCollectionEquality()
                 .equals(other.permissions, permissions));
   }
@@ -270,8 +276,8 @@ class _$Data implements Data {
 
   @JsonKey(ignore: true)
   @override
-  $DataCopyWith<Data> get copyWith =>
-      _$DataCopyWithImpl<Data>(this, _$identity);
+  $PermissionDataCopyWith<PermissionData> get copyWith =>
+      _$PermissionDataCopyWithImpl<PermissionData>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -311,9 +317,9 @@ class _$Data implements Data {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Data value) data,
-    required TResult Function(FailureState value) failure,
+    required TResult Function(PermissionInitial value) initial,
+    required TResult Function(PermissionData value) data,
+    required TResult Function(PermissionFailure value) failure,
   }) {
     return data(this);
   }
@@ -321,9 +327,9 @@ class _$Data implements Data {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Data value)? data,
-    TResult Function(FailureState value)? failure,
+    TResult Function(PermissionInitial value)? initial,
+    TResult Function(PermissionData value)? data,
+    TResult Function(PermissionFailure value)? failure,
   }) {
     return data?.call(this);
   }
@@ -331,9 +337,9 @@ class _$Data implements Data {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Data value)? data,
-    TResult Function(FailureState value)? failure,
+    TResult Function(PermissionInitial value)? initial,
+    TResult Function(PermissionData value)? data,
+    TResult Function(PermissionFailure value)? failure,
     required TResult orElse(),
   }) {
     if (data != null) {
@@ -343,39 +349,41 @@ class _$Data implements Data {
   }
 }
 
-abstract class Data implements PermissionCubitState {
-  const factory Data(
-      {required Map<Permissions, PermissionStatus> permissions}) = _$Data;
+abstract class PermissionData implements PermissionCubitState {
+  const factory PermissionData(
+          {required Map<Permissions, PermissionStatus> permissions}) =
+      _$PermissionData;
 
   Map<Permissions, PermissionStatus> get permissions;
   @JsonKey(ignore: true)
-  $DataCopyWith<Data> get copyWith => throw _privateConstructorUsedError;
+  $PermissionDataCopyWith<PermissionData> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
-abstract class $FailureStateCopyWith<$Res> {
-  factory $FailureStateCopyWith(
-          FailureState value, $Res Function(FailureState) then) =
-      _$FailureStateCopyWithImpl<$Res>;
+abstract class $PermissionFailureCopyWith<$Res> {
+  factory $PermissionFailureCopyWith(
+          PermissionFailure value, $Res Function(PermissionFailure) then) =
+      _$PermissionFailureCopyWithImpl<$Res>;
   $Res call({Failure failure});
 }
 
 /// @nodoc
-class _$FailureStateCopyWithImpl<$Res>
+class _$PermissionFailureCopyWithImpl<$Res>
     extends _$PermissionCubitStateCopyWithImpl<$Res>
-    implements $FailureStateCopyWith<$Res> {
-  _$FailureStateCopyWithImpl(
-      FailureState _value, $Res Function(FailureState) _then)
-      : super(_value, (v) => _then(v as FailureState));
+    implements $PermissionFailureCopyWith<$Res> {
+  _$PermissionFailureCopyWithImpl(
+      PermissionFailure _value, $Res Function(PermissionFailure) _then)
+      : super(_value, (v) => _then(v as PermissionFailure));
 
   @override
-  FailureState get _value => super._value as FailureState;
+  PermissionFailure get _value => super._value as PermissionFailure;
 
   @override
   $Res call({
     Object? failure = freezed,
   }) {
-    return _then(FailureState(
+    return _then(PermissionFailure(
       failure: failure == freezed
           ? _value.failure
           : failure // ignore: cast_nullable_to_non_nullable
@@ -386,8 +394,8 @@ class _$FailureStateCopyWithImpl<$Res>
 
 /// @nodoc
 
-class _$FailureState implements FailureState {
-  const _$FailureState({required this.failure});
+class _$PermissionFailure implements PermissionFailure {
+  const _$PermissionFailure({required this.failure});
 
   @override
   final Failure failure;
@@ -401,7 +409,7 @@ class _$FailureState implements FailureState {
   bool operator ==(dynamic other) {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
-            other is FailureState &&
+            other is PermissionFailure &&
             const DeepCollectionEquality().equals(other.failure, failure));
   }
 
@@ -411,8 +419,8 @@ class _$FailureState implements FailureState {
 
   @JsonKey(ignore: true)
   @override
-  $FailureStateCopyWith<FailureState> get copyWith =>
-      _$FailureStateCopyWithImpl<FailureState>(this, _$identity);
+  $PermissionFailureCopyWith<PermissionFailure> get copyWith =>
+      _$PermissionFailureCopyWithImpl<PermissionFailure>(this, _$identity);
 
   @override
   @optionalTypeArgs
@@ -452,9 +460,9 @@ class _$FailureState implements FailureState {
   @override
   @optionalTypeArgs
   TResult map<TResult extends Object?>({
-    required TResult Function(Initial value) initial,
-    required TResult Function(Data value) data,
-    required TResult Function(FailureState value) failure,
+    required TResult Function(PermissionInitial value) initial,
+    required TResult Function(PermissionData value) data,
+    required TResult Function(PermissionFailure value) failure,
   }) {
     return failure(this);
   }
@@ -462,9 +470,9 @@ class _$FailureState implements FailureState {
   @override
   @optionalTypeArgs
   TResult? mapOrNull<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Data value)? data,
-    TResult Function(FailureState value)? failure,
+    TResult Function(PermissionInitial value)? initial,
+    TResult Function(PermissionData value)? data,
+    TResult Function(PermissionFailure value)? failure,
   }) {
     return failure?.call(this);
   }
@@ -472,9 +480,9 @@ class _$FailureState implements FailureState {
   @override
   @optionalTypeArgs
   TResult maybeMap<TResult extends Object?>({
-    TResult Function(Initial value)? initial,
-    TResult Function(Data value)? data,
-    TResult Function(FailureState value)? failure,
+    TResult Function(PermissionInitial value)? initial,
+    TResult Function(PermissionData value)? data,
+    TResult Function(PermissionFailure value)? failure,
     required TResult orElse(),
   }) {
     if (failure != null) {
@@ -484,11 +492,12 @@ class _$FailureState implements FailureState {
   }
 }
 
-abstract class FailureState implements PermissionCubitState {
-  const factory FailureState({required Failure failure}) = _$FailureState;
+abstract class PermissionFailure implements PermissionCubitState {
+  const factory PermissionFailure({required Failure failure}) =
+      _$PermissionFailure;
 
   Failure get failure;
   @JsonKey(ignore: true)
-  $FailureStateCopyWith<FailureState> get copyWith =>
+  $PermissionFailureCopyWith<PermissionFailure> get copyWith =>
       throw _privateConstructorUsedError;
 }

@@ -10,7 +10,7 @@ class GetPlacesUseCase implements UseCase<void, Stream>{
   GetPlacesUseCase(this._databaseRepository);
 
   @override
-  Future<Either<Failure, Stream>> call({void params}) async {
+  Future<Either<Failure, Stream>> call({dynamic params}) async {
     try{
       Stream result = await _databaseRepository.getPlacesStream();
       return Right(result);
