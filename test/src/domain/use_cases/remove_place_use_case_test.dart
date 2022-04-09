@@ -6,7 +6,6 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
-import '../../../models.dart';
 import 'remove_place_use_case_test.mocks.dart';
 
 @GenerateMocks([DatabaseRepository])
