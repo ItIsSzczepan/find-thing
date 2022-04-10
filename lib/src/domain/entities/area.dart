@@ -1,9 +1,10 @@
+import 'package:equatable/equatable.dart';
 import 'package:find_thing/objectbox.g.dart';
 import 'package:find_thing/src/domain/entities/place.dart';
 import 'package:objectbox/objectbox.dart';
 
 @Entity()
-class Area {
+class Area extends Equatable {
   @Id()
   int id;
 
@@ -32,6 +33,9 @@ class Area {
       this.width = 50,
       this.height = 50,
       this.radius = 50});
+
+  @override
+  List<Object?> get props => [id, x, y, shape, width, height, radius, content];
 }
 
 enum Shape { rect, circle }

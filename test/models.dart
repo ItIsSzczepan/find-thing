@@ -1,4 +1,5 @@
 import 'package:find_thing/src/core/failure.dart';
+import 'package:find_thing/src/domain/entities/area.dart';
 import 'package:find_thing/src/domain/entities/place.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -14,4 +15,6 @@ class TestModels {
       id: 123,
       uid: "123123123",
       fileLocation: "./test/photos/123123123.png");
+
+  Area get exampleArea => Area(id: 12);
 }
