@@ -10,14 +10,16 @@ class ObjectBoxDatabase{
   late final AreaDao _areaDao;
 
   Future<void> create({bool? test}) async {
-    if(test != null && test){
-      _store = await openStore(directory: "./test/objectbox/");
-    }else{
-      _store = await openStore();
-    }
+    if(_store == null) {
+      if (test != null && test) {
+        _store = await openStore(directory: "./test/objectbox/");
+      } else {
+        _store = await openStore();
+      }
 
-    _placeDao = PlaceDao(_store.box<Place>());
-    _areaDao = AreaDao(_store.box<Area>());
+      _placeDao = PlaceDao(_store.box<Place>());
+      _areaDao = AreaDao(_store.box<Area>());
+    }
   }
 
   PlaceDao get placeDao => _placeDao;

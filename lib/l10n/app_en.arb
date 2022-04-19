@@ -3,6 +3,10 @@
   "@helloWorld": {
     "description": "The conventional newborn programmer greeting"
   },
+  "title": "Find things",
+  "@title": {
+    "description": "application Title"
+  },
   "permissionPageText":"This app needs file permission to work properly",
   "@permissionPageText": {
     "description": "Description for permission"
@@ -10,5 +14,11 @@
   "permissionPageButton":"Grant",
   "@permissionPageButton": {
     "description": "Button to grant permission"
-  }
+  },
+  "emptyPlacesText": "You have not added any place yet",
+  "@emptyPlacesText":{
+    "description": "Message show when places list is empty"
+  },
+  "remove": "Remove",
+  "rename": "Rename"
 }
