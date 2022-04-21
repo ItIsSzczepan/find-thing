@@ -6,6 +6,7 @@ import 'package:find_thing/src/domain/use_cases/check_and_ask_permission_use_cas
 import 'package:find_thing/src/presentation/cubits/image_cubit/image_cubit.dart';
 import 'package:find_thing/src/presentation/cubits/permission_cubit/permission_cubit.dart';
 import 'package:find_thing/src/presentation/cubits/place_cubit/place_cubit.dart';
+import 'package:find_thing/src/presentation/widgets/place_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:get_it/get_it.dart';
