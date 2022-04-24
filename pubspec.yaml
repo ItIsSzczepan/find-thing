@@ -15,6 +15,10 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   cupertino_icons: ^1.0.4
+#  ui
+  material_speed_dial: 0.0.7
+  speed_dial_fab: ^2.2.1
+  flutter_speed_dial: ^5.1.0
 #  route
   go_router: ^3.0.7
 #  internationalization

@@ -19,6 +19,12 @@
   "@emptyPlacesText":{
     "description": "Message show when places list is empty"
   },
+  "enterNewName": "Enter new name",
+  "@enterNewName": {
+    "description": "Hint to rename"
+  },
   "remove": "Remove",
-  "rename": "Rename"
+  "rename": "Rename",
+  "gallery": "Gallery",
+  "camera": "Camera"
 }

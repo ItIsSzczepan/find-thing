@@ -28,7 +28,7 @@ final List<GoRoute> routes = [
                 ImageCropPage(file: state.extra! as XFile),
             routes: [
               GoRoute(
-                  path: "/setName",
+                  path: "setName",
                   builder: (BuildContext context, GoRouterState state) =>
                       SetNamePage(image: state.extra! as Image))
             ]),
@@ -39,7 +39,7 @@ final List<GoRoute> routes = [
                 PlacePage(place: state.extra! as Place),
             routes: <GoRoute>[
               GoRoute(
-                  path: "/area/:areaId",
+                  path: "area/:areaId",
                   builder: (BuildContext context, GoRouterState state) {
                     Map<String, dynamic> params =
                     state.extra! as Map<String, dynamic>;

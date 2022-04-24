@@ -1,3 +1,5 @@
+// ignore_for_file: must_be_immutable
+
 import 'package:equatable/equatable.dart';
 import 'package:find_thing/objectbox.g.dart';
 import 'package:find_thing/src/domain/entities/place.dart';

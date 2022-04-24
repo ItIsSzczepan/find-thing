@@ -14,5 +14,5 @@ class PlaceDao {
 
   bool remove(int id) => _box.remove(id);
 
-  Stream<Query<Place>> get allPlacesStream => _box.query(Place_.id > 0).watch(triggerImmediately: true);
+  Stream<Query<Place>> get allPlacesStream => _box.query().watch(triggerImmediately: true);
 }

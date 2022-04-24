@@ -1,7 +1,6 @@
 import 'package:dartz/dartz.dart';
 import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/core/usecase.dart';
-import 'package:find_thing/src/domain/entities/place.dart';
 import 'package:find_thing/src/domain/repositories/database_repository.dart';
 
 class GetPlacesUseCase implements UseCase<void, Stream>{

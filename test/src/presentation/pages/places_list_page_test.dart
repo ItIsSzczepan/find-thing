@@ -1,3 +1,6 @@
+import 'dart:async';
+
+import 'package:bloc_test/bloc_test.dart';
 import 'package:find_thing/objectbox.g.dart';
 import 'package:find_thing/src/core/navigation.dart';
 import 'package:find_thing/src/data/data_sources/objectbox_database.dart';
@@ -8,44 +11,50 @@ import 'package:find_thing/src/presentation/cubits/permission_cubit/permission_c
 import 'package:find_thing/src/presentation/cubits/place_cubit/place_cubit.dart';
 import 'package:find_thing/src/presentation/widgets/place_tile.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:get_it/get_it.dart';
 import 'package:go_router/go_router.dart';
 import 'package:go_router/src/go_route_match.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:mockito/annotations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:mockito/mockito.dart';
+import 'package:mocktail/mocktail.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../models.dart';
-import 'places_list_page_test.mocks.dart';
 
-@GenerateMocks([ImageCubit, PlaceCubit, PermissionCubit])
+class MockPermissionCubit extends MockCubit<PermissionCubitState>
+    implements PermissionCubit {}
+
+class MockImageCubit extends MockCubit<ImageCubitState> implements ImageCubit {}
+
+class MockPlaceCubit extends MockCubit<PlaceCubitState> implements PlaceCubit {
+  ObjectBoxDatabase objectBoxDatabase;
+
+  MockPlaceCubit(this.objectBoxDatabase);
+
+  @override
+  edit(Place place) {
+    objectBoxDatabase.placeDao.save(place);
+  }
+}
+
 void main() {
   TestWidgetsFlutterBinding.ensureInitialized();
 
-  late final MockImageCubit imageCubit;
-  late final MockPlaceCubit placeCubit;
-  late final PermissionCubit permissionCubit;
+  late MockImageCubit imageCubit;
+  late MockPlaceCubit placeCubit;
+  late PermissionCubit permissionCubit;
   late GoRouter router;
   late ObjectBoxDatabase objectBoxDatabase;
 
-  setUpAll(() {
-    objectBoxDatabase = ObjectBoxDatabase()..create(test: true);
+  setUpAll(() async {
+    objectBoxDatabase = ObjectBoxDatabase();
+    await objectBoxDatabase.create(test: true);
     if (objectBoxDatabase.placeDao.getAll().isEmpty) {
       objectBoxDatabase.placeDao.save(TestModels().examplePlace);
     }
-
-    imageCubit = MockImageCubit();
-    placeCubit = MockPlaceCubit();
-    permissionCubit = MockPermissionCubit();
-
-    GetIt.I.registerFactory<ImageCubit>(() => imageCubit);
-    GetIt.I.registerFactory<PlaceCubit>(() => placeCubit);
-    GetIt.I.registerFactory<PermissionCubit>(() => permissionCubit);
   });
 
   tearDownAll(() {
@@ -55,45 +64,72 @@ void main() {
   initPage(WidgetTester tester) async {
     router = GoRouter(initialLocation: "/", routes: routes);
 
-    await tester.pumpWidget(MaterialApp.router(
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      routerDelegate: router.routerDelegate,
-      routeInformationParser: router.routeInformationParser,
-    ));
+    await tester.pumpWidget(
+      MultiBlocProvider(
+        providers: [
+          BlocProvider<PermissionCubit>(
+            create: (context) => permissionCubit,
+          ),
+          BlocProvider<ImageCubit>(
+            create: (context) => imageCubit,
+          ),
+          BlocProvider<PlaceCubit>(create: (_) => placeCubit, lazy: false,)
+        ],
+        child: MaterialApp.router(
+          localizationsDelegates: AppLocalizations.localizationsDelegates,
+          supportedLocales: AppLocalizations.supportedLocales,
+          routerDelegate: router.routerDelegate,
+          routeInformationParser: router.routeInformationParser,
+        ),
+      ),
+    );
   }
 
   initWhenMocks() {
-    when(permissionCubit.checkFile()).thenAnswer((realInvocation) async {
-      permissionCubit.emit(const PermissionCubitState.data(
-          permissions: {Permissions.file: PermissionStatus.granted}));
-    });
-    when(imageCubit.retrieveImage()).thenAnswer(
-        (realInvocation) => imageCubit.emit(const ImageCubitState.empty()));
-    when(placeCubit.state).thenReturn(PlaceCubitState.data(
+    imageCubit = MockImageCubit();
+    placeCubit = MockPlaceCubit(objectBoxDatabase);
+    permissionCubit = MockPermissionCubit();
+
+    when(() => permissionCubit.checkFile())
+        .thenAnswer((realInvocation) async => {
+              permissionCubit.emit(const PermissionCubitState.data(
+                  permissions: {Permissions.file: PermissionStatus.granted}))
+            });
+    when(() => imageCubit.retrieveImage()).thenAnswer((realInvocation) async =>
+        imageCubit.emit(const ImageCubitState.empty()));
+    when(() => permissionCubit.state)
+        .thenReturn(const PermissionCubitState.initial());
+    when(() => imageCubit.state).thenReturn(const ImageCubitState.initial());
+    when(() => placeCubit.state).thenReturn(PlaceCubitState.data(
         stream: objectBoxDatabase.placeDao.allPlacesStream));
   }
 
   group("check ui displaying", () {
     testWidgets("title should be displayed", (WidgetTester tester) async {
+      initWhenMocks();
       await initPage(tester);
+      await tester.pumpAndSettle();
 
       expect(find.text(AppLocalizationsEn().title), findsOneWidget);
     });
 
     testWidgets("fab should be displayed", (WidgetTester tester) async {
+      initWhenMocks();
       await initPage(tester);
+      await tester.pumpAndSettle();
 
       expect(find.byType(FloatingActionButton), findsOneWidget);
     });
 
     testWidgets("fab should expand options", (WidgetTester tester) async {
+      initWhenMocks();
       await initPage(tester);
+      await tester.pumpAndSettle();
 
       //act
-      final fab = find.byType(FloatingActionButton);
+      final fab = find.byIcon(Icons.add);
       await tester.tap(fab);
-      await tester.pump();
+      await tester.pump(const Duration(seconds: 1));
 
       final buttonWithGalleryIcon = find.byIcon(Icons.browse_gallery);
       final buttonWithCameraIcon = find.byIcon(Icons.camera_alt);
@@ -101,80 +137,92 @@ void main() {
       //expect
       expect(buttonWithGalleryIcon, findsOneWidget);
       expect(buttonWithCameraIcon, findsOneWidget);
+      debugPrint(permissionCubit.state.toString());
+      debugPrint(imageCubit.state.toString());
+
+      //close menu before terminating app, prevents bug from package
+      await tester.tap(fab.first);
+      await tester.pump();
     });
   });
 
   group("permission cubit interactions", () {
     testWidgets("page should ask for permission on init",
         (WidgetTester tester) async {
-      when(permissionCubit.checkFile()).thenAnswer((realInvocation) async {
+      initWhenMocks();
+      when(() => permissionCubit.checkFile())
+          .thenAnswer((realInvocation) async {
         permissionCubit.emit(const PermissionCubitState.data(
             permissions: {Permissions.file: PermissionStatus.granted}));
       });
-
       await initPage(tester);
+      await tester.pumpAndSettle();
 
-      verify(permissionCubit.checkFile()).called(1);
+      verify(() => permissionCubit.checkFile()).called(1);
     });
 
     testWidgets(
         "page should redirect to permission page if permission wasn't granted",
         (WidgetTester tester) async {
-      when(permissionCubit.checkFile()).thenAnswer((realInvocation) async {
-        permissionCubit.emit(const PermissionCubitState.data(
-            permissions: {Permissions.file: PermissionStatus.denied}));
+      initWhenMocks();
+      whenListen(
+          permissionCubit,
+          Stream.fromIterable([
+            const PermissionCubitState.initial(),
+            const PermissionCubitState.data(
+                permissions: {Permissions.file: PermissionStatus.denied})
+          ]));
+      when(() => permissionCubit.checkFile())
+          .thenAnswer((realInvocation) async {
+        when(() => permissionCubit.state).thenReturn(
+            const PermissionCubitState.data(
+                permissions: {Permissions.file: PermissionStatus.denied}));
       });
 
       await initPage(tester);
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
       //verify
-      verify(permissionCubit.checkFile()).called(1);
+      verify(() => permissionCubit.checkFile()).called(1);
 
       final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(1));
-      expect(matches.first.extra, isA<Function>());
-      expect(matches.first.fullpath, "/permission");
+      expect(matches, hasLength(2));
+      expect(permissionCubit.state, isA<PermissionData>());
+      expect(matches.last.extra, isA<Function>());
+      expect(matches.last.fullpath, "/permission");
     });
   });
 
   group("image cubit interactions", () {
     testWidgets("page should redirect if image cubit retrieve lost file",
         (WidgetTester tester) async {
-      when(permissionCubit.checkFile()).thenAnswer((realInvocation) async {
-        permissionCubit.emit(const PermissionCubitState.data(
-            permissions: {Permissions.file: PermissionStatus.granted}));
-      });
-      when(imageCubit.retrieveImage()).thenAnswer((realInvocation) =>
-          imageCubit.emit(ImageCubitState.picked(XFile(""))));
+      initWhenMocks();
+      whenListen(imageCubit, Stream.fromIterable([const ImageCubitState.initial(), ImageCubitState.picked(XFile(""))]));
 
       await initPage(tester);
       await tester.pumpAndSettle();
 
       // verify
-      verify(imageCubit.retrieveImage()).called(1);
+      verify(() => imageCubit.retrieveImage()).called(1);
 
       final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(1));
-      expect(matches.first.extra, isA<XFile>());
-      expect(matches.first.fullpath, "/imageCrop");
+      expect(matches, hasLength(2));
+      expect(matches.last.extra, isA<XFile>());
+      expect(matches.last.fullpath, "/imageCrop");
     });
 
     testWidgets(
         "page shouldn't redirect if image cubit didn't retrieve lost file",
         (WidgetTester tester) async {
-      when(permissionCubit.checkFile()).thenAnswer((realInvocation) async {
-        permissionCubit.emit(const PermissionCubitState.data(
-            permissions: {Permissions.file: PermissionStatus.granted}));
-      });
-      when(imageCubit.retrieveImage()).thenAnswer(
-          (realInvocation) => imageCubit.emit(const ImageCubitState.empty()));
+      initWhenMocks();
+      whenListen(imageCubit, Stream.fromIterable([const ImageCubitState.initial(), const ImageCubitState.empty()]));
+
 
       await initPage(tester);
-      await tester.pump();
+      await tester.pumpAndSettle();
 
       // verify
-      verify(imageCubit.retrieveImage()).called(1);
+      verify(() => imageCubit.retrieveImage()).called(1);
 
       final List<GoRouteMatch> matches = router.routerDelegate.matches;
       expect(matches, hasLength(1));
@@ -186,45 +234,46 @@ void main() {
         (WidgetTester tester) async {
       // init
       initWhenMocks();
-      when(imageCubit.pickImage(ImageSource.gallery)).thenAnswer(
-          (realInvocation) =>
-              imageCubit.emit(ImageCubitState.picked(XFile(""))));
+      StreamController<ImageCubitState> controller = StreamController<ImageCubitState>()..add(const ImageCubitState.empty());
+      whenListen(imageCubit, controller.stream, initialState: const ImageCubitState.initial());
 
       await initPage(tester);
-
+      await tester.pump();
       // act
-      await tester.tap(find.byType(FloatingActionButton));
-      await tester.pump(const Duration(seconds: 1));
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
       await tester.tap(find.byIcon(Icons.browse_gallery));
+      controller.add(ImageCubitState.picked(XFile("")));
       await tester.pumpAndSettle();
 
       // verify
-      verify(imageCubit.pickImage(ImageSource.gallery)).called(1);
-
+      verify(() => imageCubit.pickImage(ImageSource.gallery)).called(1);
       final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(1));
-      expect(matches.first.extra, isA<XFile>());
-      expect(matches.first.fullpath, "/imageCrop");
+      expect(matches, hasLength(2));
+      expect(matches.last.extra, isA<XFile>());
+      expect(matches.last.fullpath, "/imageCrop");
     });
 
     testWidgets("page shouldn't redirect if image wasn't selected from gallery",
         (WidgetTester tester) async {
       // init
       initWhenMocks();
-      when(imageCubit.pickImage(ImageSource.gallery)).thenAnswer(
-          (realInvocation) async =>
-              imageCubit.emit(const ImageCubitState.empty()));
+      StreamController<ImageCubitState> controller = StreamController<ImageCubitState>()..add(const ImageCubitState.empty());
+      whenListen(imageCubit, controller.stream, initialState: const ImageCubitState.initial());
+
 
       await initPage(tester);
+      await tester.pump();
 
       // act
-      await tester.tap(find.byType(FloatingActionButton));
-      await tester.pump(const Duration(seconds: 1));
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
       await tester.tap(find.byIcon(Icons.browse_gallery));
+      controller.add(const ImageCubitState.empty());
       await tester.pumpAndSettle();
 
       // verify
-      verify(imageCubit.pickImage(ImageSource.gallery)).called(1);
+      verify(() => imageCubit.pickImage(ImageSource.gallery)).called(1);
 
       final List<GoRouteMatch> matches = router.routerDelegate.matches;
       expect(matches, hasLength(1));
@@ -236,45 +285,47 @@ void main() {
         (WidgetTester tester) async {
       // init
       initWhenMocks();
-      when(imageCubit.pickImage(ImageSource.camera)).thenAnswer(
-          (realInvocation) async =>
-              imageCubit.emit(ImageCubitState.picked(XFile(""))));
+      StreamController<ImageCubitState> controller = StreamController<ImageCubitState>()..add(const ImageCubitState.empty());
+      whenListen(imageCubit, controller.stream, initialState: const ImageCubitState.initial());
 
       await initPage(tester);
+      await tester.pump();
 
       // act
-      await tester.tap(find.byType(FloatingActionButton));
-      await tester.pump(const Duration(seconds: 1));
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
       await tester.tap(find.byIcon(Icons.camera_alt));
+      controller.add(ImageCubitState.picked(XFile("")));
       await tester.pumpAndSettle();
 
       // verify
-      verify(imageCubit.pickImage(ImageSource.camera)).called(1);
+      verify(() => imageCubit.pickImage(ImageSource.camera)).called(1);
 
       final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(1));
-      expect(matches.first.extra, isA<XFile>());
-      expect(matches.first.fullpath, "/imageCrop");
+      expect(matches, hasLength(2));
+      expect(matches.last.extra, isA<XFile>());
+      expect(matches.last.fullpath, "/imageCrop");
     });
 
     testWidgets("page shouldn't redirect if image wasn't taken from camera",
         (WidgetTester tester) async {
       // init
       initWhenMocks();
-      when(imageCubit.pickImage(ImageSource.camera)).thenAnswer(
-          (realInvocation) async =>
-              imageCubit.emit(const ImageCubitState.empty()));
+      StreamController<ImageCubitState> controller = StreamController<ImageCubitState>()..add(const ImageCubitState.empty());
+      whenListen(imageCubit, controller.stream, initialState: const ImageCubitState.initial());
+
 
       await initPage(tester);
 
       // act
-      await tester.tap(find.byType(FloatingActionButton));
-      await tester.pump(const Duration(seconds: 1));
+      await tester.tap(find.byIcon(Icons.add));
+      await tester.pumpAndSettle(const Duration(seconds: 1));
       await tester.tap(find.byIcon(Icons.camera_alt));
+      controller.add(const ImageCubitState.empty());
       await tester.pumpAndSettle();
 
       // verify
-      verify(imageCubit.pickImage(ImageSource.camera)).called(1);
+      verify(() => imageCubit.pickImage(ImageSource.camera)).called(1);
 
       final List<GoRouteMatch> matches = router.routerDelegate.matches;
       expect(matches, hasLength(1));
@@ -287,9 +338,10 @@ void main() {
         (WidgetTester tester) async {
       // init
       initWhenMocks();
-      when(placeCubit.state).thenReturn(
+      when(() => placeCubit.state).thenReturn(
           const PlaceCubitState.data(stream: Stream<Query<Place>>.empty()));
-      initPage(tester);
+      await initPage(tester);
+      await tester.pumpAndSettle();
 
       // expect
       expect(find.text(AppLocalizationsEn().emptyPlacesText), findsOneWidget);
@@ -298,76 +350,90 @@ void main() {
     testWidgets("page should display places list", (WidgetTester tester) async {
       // init
       initWhenMocks();
-      initPage(tester);
+      await initPage(tester);
+      await tester.pumpAndSettle();
 
       // expect
+      expect(find.text(AppLocalizationsEn().emptyPlacesText), findsNothing);
       expect(find.byType(PlaceTile), findsWidgets);
     });
 
-    testWidgets("page should redirect after tap on place tile", (WidgetTester tester) async {
+    testWidgets("page should redirect after tap on place tile",
+        (WidgetTester tester) async {
       // init
       initWhenMocks();
-      initPage(tester);
+      await initPage(tester);
+      await tester.pumpAndSettle();
 
       // act
       Place firstPlace = objectBoxDatabase.placeDao.getAll().first;
       final firstPlaceTileTitle = find.text(firstPlace.name);
-      await tester.tap(firstPlaceTileTitle);
+      await tester.tap(firstPlaceTileTitle.first);
       await tester.pumpAndSettle();
 
       final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches.first.extra, isA<Place>());
-      expect(matches, hasLength(1));
-      expect(matches.first.fullpath, "/place/${firstPlace.id}");
+      expect(matches, hasLength(2));
+      expect(matches.last.extra, isA<Place>());
+      expect(matches.last.subloc, "/place/${firstPlace.id}");
     });
 
-    testWidgets("page should updated place title after renaming", (WidgetTester tester) async {
+    // TODO: transfer to integration test
+    testWidgets("page should updated place title after renaming",
+        (WidgetTester tester) async {
       // init
-      Place firstPlace = objectBoxDatabase.placeDao.getAll().first;
+      Place firstPlaceBeforeAct = objectBoxDatabase.placeDao.getAll().first;
       String newTitle = const Uuid().v1();
 
       initWhenMocks();
-      initPage(tester);
-      when(placeCubit.edit(firstPlace)).thenAnswer((realInvocation) => objectBoxDatabase.placeDao.save(realInvocation.positionalArguments.first));
+      await initPage(tester);
+      await tester.pumpAndSettle();
 
       // ACT
       // open place menu
-      final firstPlaceTileText = find.text(firstPlace.name);
-      await tester.longPress(firstPlaceTileText);
-      await tester.pump();
+      final firstPlaceTileText = find.text(firstPlaceBeforeAct.name);
+      await tester.longPress(firstPlaceTileText.first);
+      await tester.pump(const Duration(seconds: 2));
       // tap rename button
-      final renameButtonText = find.textContaining(AppLocalizationsEn().rename);
-      await tester.tap(renameButtonText);
+      final renameButtonIcon = find.byIcon(Icons.drive_file_rename_outline);
+      await tester.tap(renameButtonIcon);
       await tester.pump();
       // enter new name
       final findTextField = find.byType(TextField);
       await tester.enterText(findTextField, newTitle);
       await tester.pump();
       // accept
-      final findRenameAlertButton = find.text(AppLocalizationsEn().rename);
+      final findRenameAlertButton = find.widgetWithText(TextButton, AppLocalizationsEn().rename);
       await tester.tap(findRenameAlertButton);
       await tester.pump();
 
       final findNewTitle = find.widgetWithText(PlaceTile, newTitle);
+      Place firstPlaceAfterAct = objectBoxDatabase.placeDao.getAll().first;
 
       // expect
+      expect(firstPlaceBeforeAct.name, isNot(firstPlaceAfterAct.name));
       expect(findNewTitle, findsOneWidget);
-      verify(placeCubit.edit(firstPlace));
+      verify(() => placeCubit.edit(firstPlaceBeforeAct));
     });
 
-    testWidgets("page should remove deleted Place from list", (WidgetTester tester) async {
+    // TODO: transfer to integration test
+    testWidgets("page should remove deleted Place from list",
+        (WidgetTester tester) async {
       // init
-      Place firstPlace = objectBoxDatabase.placeDao.getAll().first;
+      List<Place> allPlacesBeforeAct = objectBoxDatabase.placeDao.getAll();
+      Place firstPlace = allPlacesBeforeAct.first;
 
       initWhenMocks();
-      initPage(tester);
-      when(placeCubit.remove(firstPlace.id)).thenAnswer((realInvocation) => objectBoxDatabase.placeDao.remove(realInvocation.positionalArguments.first));
+      await initPage(tester);
+      await tester.pump();
+      when(() => placeCubit.remove(firstPlace.id)).thenAnswer((realInvocation) =>
+          objectBoxDatabase.placeDao
+              .remove(realInvocation.positionalArguments.first));
 
       // ACT
       // open place menu
       final firstPlaceTileText = find.text(firstPlace.name);
       await tester.longPress(firstPlaceTileText);
-      await tester.pump();
+      await tester.pump(const Duration(seconds: 2));
       // tap rename button
       final removeButtonText = find.textContaining(AppLocalizationsEn().remove);
       await tester.tap(removeButtonText);
@@ -375,13 +441,16 @@ void main() {
       // accept
       final findRemoveAlertButton = find.text(AppLocalizationsEn().remove);
       await tester.tap(findRemoveAlertButton);
-      await tester.pump();
+      await tester.pump(Duration.zero, EnginePhase.flushSemantics);
+
 
       final findNewTitle = find.widgetWithText(PlaceTile, firstPlace.name);
+      List<Place> allPlacesAfterAct = objectBoxDatabase.placeDao.getAll();
 
       // expect
-      expect(findNewTitle, findsNothing);
-      verify(placeCubit.remove(firstPlace.id));
+      expect(allPlacesBeforeAct.length, allPlacesAfterAct.length + 1);
+      expectLater(findNewTitle, findsNothing);
+      verify(() => placeCubit.remove(firstPlace.id));
     });
   });
 }

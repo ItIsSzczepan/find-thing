@@ -1,5 +1,5 @@
 import 'package:permission_handler/permission_handler.dart';
-import 'package:permission_handler/permission_handler.dart' as permissionHandler
+import 'package:permission_handler/permission_handler.dart' as permission_handler
     show openAppSettings;
 
 class PermissionsService {
@@ -10,7 +10,7 @@ class PermissionsService {
 
   /// Open the app settings.
   Future<bool> openAppSettings() {
-    return permissionHandler.openAppSettings();
+    return permission_handler.openAppSettings();
   }
 
   /// Request permissions for a single permission.

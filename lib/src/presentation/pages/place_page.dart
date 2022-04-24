@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 class PlacePage extends StatelessWidget {
   final Place place;
+
   const PlacePage({Key? key, required this.place}) : super(key: key);
 
   @override

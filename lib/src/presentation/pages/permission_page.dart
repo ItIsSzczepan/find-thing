@@ -2,7 +2,6 @@ import 'package:find_thing/src/domain/use_cases/check_and_ask_permission_use_cas
 import 'package:find_thing/src/presentation/cubits/permission_cubit/permission_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -13,9 +12,8 @@ class PermissionPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    PermissionCubit cubit = GetIt.I();
     return BlocListener<PermissionCubit, PermissionCubitState>(
-      bloc: cubit,
+      bloc: context.read<PermissionCubit>(),
       listener: (context, state) {
         if (state is PermissionData &&
             state.permissions[Permissions.file] == PermissionStatus.granted) {
@@ -34,7 +32,7 @@ class PermissionPage extends StatelessWidget {
                 Text(AppLocalizations.of(context)!.permissionPageText),
                 TextButton(
                     onPressed: () {
-                      cubit.checkFile();
+                      context.read<PermissionCubit>().checkFile();
                     },
                     child: Text(AppLocalizations.of(context)!.permissionPageButton))
               ],

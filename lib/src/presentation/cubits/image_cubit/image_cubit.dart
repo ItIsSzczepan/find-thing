@@ -1,7 +1,6 @@
 import 'dart:ui';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/core/params.dart';
 import 'package:find_thing/src/domain/use_cases/retrieve_lost_image_use_case.dart';
