@@ -40,6 +40,6 @@ class PlaceCubit extends Cubit<PlaceCubitState> {
 
   _emitError(Failure failure) {
     addError(failure);
-    emit(PlaceCubitState.failure(failure: failure));
+    //emit(PlaceCubitState.failure(failure: failure));
   }
 }

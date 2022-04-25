@@ -1,5 +1,6 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
+import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/domain/use_cases/edit_place_use_case.dart';
 import 'package:find_thing/src/domain/use_cases/get_places_use_case.dart';
 import 'package:find_thing/src/domain/use_cases/remove_place_use_case.dart';
@@ -56,7 +57,7 @@ void main() {
           .thenAnswer((realInvocation) async => const Right(false)),
       build: () => placeCubit,
       act: (cubit) => cubit.edit(TestModels().examplePlace),
-      expect: () => [isA<PlaceFailure>()],
+      expect: () => [],
       verify: (_) {
         verify(mockEditPlaceUseCase(params: anyNamed("params")));
       });
@@ -77,7 +78,7 @@ void main() {
           .thenAnswer((realInvocation) async => const Right(false)),
       build: () => placeCubit,
       act: (cubit) => cubit.remove(TestModels().examplePlace.id),
-      expect: () => [isA<PlaceFailure>()],
+      expect: () => [],
       verify: (_) {
         verify(mockRemovePlaceUseCase(params: anyNamed("params")));
       });

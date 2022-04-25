@@ -23,8 +23,18 @@
   "@enterNewName": {
     "description": "Hint to rename"
   },
+  "cropImageTitle": "Crop image",
+  "@cropImageTitle": {
+    "description": "Title of image cropping page"
+  },
+  "openSettings": "Open settings",
+  "@openSettings": {
+    "description": "Text of button to open application setting in os"
+  },
   "remove": "Remove",
   "rename": "Rename",
   "gallery": "Gallery",
-  "camera": "Camera"
+  "camera": "Camera",
+  "crop": "Crop",
+  "cancel": "Cancel"
 }

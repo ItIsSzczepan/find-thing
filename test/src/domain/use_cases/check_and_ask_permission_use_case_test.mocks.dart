@@ -34,4 +34,8 @@ class MockPermissionRepository extends _i1.Mock
               returnValue: Future<_i4.PermissionStatus>.value(
                   _i4.PermissionStatus.denied))
           as _i3.Future<_i4.PermissionStatus>);
+  @override
+  _i3.Future<bool> openSettings() =>
+      (super.noSuchMethod(Invocation.method(#openSettings, []),
+          returnValue: Future<bool>.value(false)) as _i3.Future<bool>);
 }

@@ -24,17 +24,24 @@ class PermissionPage extends StatelessWidget {
         body: SafeArea(
           child: Center(
             child: Column(
+
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const Icon(
                   Icons.folder,
-                  size: 24.0,
+                  size: 52.0,
                 ),
-                Text(AppLocalizations.of(context)!.permissionPageText),
-                TextButton(
+                Text(AppLocalizations.of(context)!.permissionPageText, style: Theme.of(context).textTheme.headline5, textAlign: TextAlign.center,),
+                ElevatedButton(
                     onPressed: () {
                       context.read<PermissionCubit>().checkFile();
                     },
-                    child: Text(AppLocalizations.of(context)!.permissionPageButton))
+                    child: Text(AppLocalizations.of(context)!.permissionPageButton)),
+                ElevatedButton(
+                    onPressed: () {
+                      context.read<PermissionCubit>().openSettings();
+                    },
+                    child: Text(AppLocalizations.of(context)!.openSettings)),
               ],
             ),
           ),

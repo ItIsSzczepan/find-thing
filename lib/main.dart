@@ -1,70 +1,48 @@
+import 'package:find_thing/injector.dart';
+import 'package:find_thing/src/core/navigation.dart';
+import 'package:find_thing/src/presentation/cubits/area_cubit/area_cubit.dart';
+import 'package:find_thing/src/presentation/cubits/image_cubit/image_cubit.dart';
+import 'package:find_thing/src/presentation/cubits/permission_cubit/permission_cubit.dart';
+import 'package:find_thing/src/presentation/cubits/place_cubit/place_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:get_it/get_it.dart';
+
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
+  initInjector();
+
   runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      localizationsDelegates: AppLocalizations.localizationsDelegates,
-      supportedLocales: AppLocalizations.supportedLocales,
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
-    );
-  }
-}
-
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  final String title;
-
-  @override
-  State<MyHomePage> createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
-            ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
-            ),
-          ],
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider<PermissionCubit>(
+          create: (context) => GetIt.I(),
         ),
+        BlocProvider<ImageCubit>(
+          create: (context) => GetIt.I(),
+        ),
+        BlocProvider<PlaceCubit>(
+          create: (context) => GetIt.I()..getPlaces(),
+        ),
+        BlocProvider<AreaCubit>(
+          create: (context) => GetIt.I(),
+        ),
+      ],
+      child: MaterialApp.router(
+        title: "Find things",
+        localizationsDelegates: AppLocalizations.localizationsDelegates,
+        supportedLocales: AppLocalizations.supportedLocales,
+        routerDelegate: router.routerDelegate,
+        routeInformationParser: router.routeInformationParser,
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }

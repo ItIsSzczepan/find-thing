@@ -24,13 +24,12 @@ class PlacesListPage extends StatelessWidget {
         child: MultiBlocListener(
             listeners: [
               BlocListener<PermissionCubit, PermissionCubitState>(
-                  bloc: context.read<PermissionCubit>()
-                    ..checkFile(),
+                  bloc: context.read<PermissionCubit>()..checkFile(),
                   listener: (context, state) {
                     if (state is PermissionData) {
                       if (state.permissions[Permissions.file] !=
                           PermissionStatus.granted) {
-                        context.push("/permission", extra: () => context.pop());
+                        context.go("/permission", extra: () => context.pop());
                       }
                     }
                     if (state is PermissionFailure) {
@@ -39,11 +38,10 @@ class PlacesListPage extends StatelessWidget {
                     }
                   }),
               BlocListener<ImageCubit, ImageCubitState>(
-                  bloc: context.read<ImageCubit>()
-                    ..retrieveImage(),
+                  bloc: context.read<ImageCubit>()..retrieveImage(),
                   listener: (context, state) {
                     if (state is ImagePicked) {
-                      context.push('/imageCrop', extra: state.file);
+                      context.push('/imageCrop', extra: {'xfile': state.file});
                     }
                     if (state is ImageFailure) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -53,12 +51,21 @@ class PlacesListPage extends StatelessWidget {
             ],
             child: BlocBuilder<PlaceCubit, PlaceCubitState>(
                 bloc: context.read<PlaceCubit>(),
-                buildWhen: (context, state) => state is PlaceData,
                 builder: (context, state) {
                   // get stream
+                  if(state is PlaceFailure) {
+                    failureSnackBar(failure: state.failure);
+                    context.read<PlaceCubit>().getPlaces();
+                    return CircularProgressIndicator();
+                  }
+                  if (state is PlaceInitial) {
+                    return Center(
+                        child: Text(
+                            AppLocalizations.of(context)!.emptyPlacesText));
+                  }
                   state as PlaceData;
                   Stream<List<Place>> placeListQueryStream =
-                  state.stream.map((q) => q.find());
+                      state.stream.map((q) => q.find());
 
                   return StreamBuilder<List<Place>>(
                       stream: placeListQueryStream,
@@ -76,8 +83,8 @@ class PlacesListPage extends StatelessWidget {
                         return GridView.builder(
                             itemCount: places.length,
                             gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2),
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2),
                             itemBuilder: (context, index) =>
                                 PlaceTile(place: places[index]));
                       });
@@ -97,13 +104,15 @@ class PlacesListPage extends StatelessWidget {
     return SpeedDial(
       child: const Icon(Icons.add),
       children: [
-        SpeedDialChild(onTap: () =>
-            context.read<ImageCubit>().pickImage(ImageSource.camera),
+        SpeedDialChild(
+            onTap: () =>
+                context.read<ImageCubit>().pickImage(ImageSource.camera),
             child: const Icon(Icons.camera_alt),
             label: AppLocalizations.of(context)!.camera),
-        SpeedDialChild(onTap: () =>
-            context.read<ImageCubit>().pickImage(ImageSource.gallery),
-            child: const Icon(Icons.browse_gallery),
+        SpeedDialChild(
+            onTap: () =>
+                context.read<ImageCubit>().pickImage(ImageSource.gallery),
+            child: const Icon(Icons.collections),
             label: AppLocalizations.of(context)!.gallery),
       ],
     );

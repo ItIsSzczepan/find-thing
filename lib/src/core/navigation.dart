@@ -24,13 +24,17 @@ final List<GoRoute> routes = [
                 )),
         GoRoute(
             path: "imageCrop",
-            builder: (BuildContext context, GoRouterState state) =>
-                ImageCropPage(file: state.extra! as XFile),
+            builder: (BuildContext context, GoRouterState state) {
+              final params = state.extra! as Map<String,Object>;
+              return ImageCropPage(file: params['xfile'] as XFile);
+            },
             routes: [
               GoRoute(
                   path: "setName",
-                  builder: (BuildContext context, GoRouterState state) =>
-                      SetNamePage(image: state.extra! as Image))
+                  builder: (BuildContext context, GoRouterState state) {
+                    final params = state.extra! as Map<String,Object>;
+                    return SetNamePage(image: params['image'] as Image);
+                  })
             ]),
         GoRoute(path: "places", redirect: (state) => "/"),
         GoRoute(

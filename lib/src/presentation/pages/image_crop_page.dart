@@ -1,12 +1,93 @@
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'dart:typed_data';
 
-class ImageCropPage extends StatelessWidget {
+import 'package:crop_your_image/crop_your_image.dart';
+import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
+class ImageCropPage extends StatefulWidget {
   final XFile file;
+
   const ImageCropPage({Key? key, required this.file}) : super(key: key);
 
   @override
+  State<ImageCropPage> createState() => _ImageCropPageState();
+}
+
+class _ImageTest extends State<ImageCropPage>{
+  @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold();
+  }
+
+}
+
+class _ImageCropPageState extends State<ImageCropPage> {
+  late Uint8List image = Uint8List(0);
+
+  final _cropController = CropController();
+
+  @override
+  void initState() {
+    loadImage(widget.file);
+    super.initState();
+  }
+
+  loadImage(XFile file) async {
+    file.readAsBytes().then((value) => setState(() {
+          image = value;
+        }));
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: _appBar(context),
+      body: SafeArea(
+        child: Column(
+          children: [
+            // ignore: unnecessary_null_comparison
+            image.isNotEmpty
+                ? Expanded(
+                  child: SizedBox(
+                    child: Crop(
+                      baseColor: Colors.white,
+                        controller: _cropController,
+                        image: image,
+                        onCropped: (Uint8List value) {
+                          context.go("/imageCrop/setName", extra: {'xfile': widget.file,'image': Image.memory(value)});
+                        },
+                      ),
+                  ),
+                )
+                : const CircularProgressIndicator(),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                TextButton.icon(
+                    onPressed: () {
+                      context.pop();
+                    },
+                    icon: const Icon(Icons.close),
+                    label: Text(AppLocalizations.of(context)!.cancel)),
+                TextButton.icon(
+                    onPressed: () {
+                      _cropController.crop();
+                    },
+                    icon: const Icon(Icons.crop),
+                    label: Text(AppLocalizations.of(context)!.crop))
+              ],
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  PreferredSizeWidget _appBar(BuildContext context) {
+    return AppBar(
+      title: Text(AppLocalizations.of(context)!.cropImageTitle),
+    );
   }
 }

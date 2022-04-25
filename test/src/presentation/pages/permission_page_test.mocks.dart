@@ -6,8 +6,11 @@ import 'dart:async' as _i4;
 
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:find_thing/src/core/failure.dart' as _i5;
+import 'package:find_thing/src/core/params.dart' as _i8;
 import 'package:find_thing/src/domain/use_cases/check_and_ask_permission_use_case.dart'
     as _i3;
+import 'package:find_thing/src/domain/use_cases/open_settings_use_case.dart'
+    as _i7;
 import 'package:mockito/mockito.dart' as _i1;
 import 'package:permission_handler/permission_handler.dart' as _i6;
 
@@ -40,4 +43,21 @@ class MockCheckAndAskPermissionUseCase extends _i1.Mock
                   Future<_i2.Either<_i5.Failure, _i6.PermissionStatus>>.value(
                       _FakeEither_0<_i5.Failure, _i6.PermissionStatus>()))
           as _i4.Future<_i2.Either<_i5.Failure, _i6.PermissionStatus>>);
+}
+
+/// A class which mocks [OpenSettingsUseCase].
+///
+/// See the documentation for Mockito's code generation for more information.
+class MockOpenSettingsUseCase extends _i1.Mock
+    implements _i7.OpenSettingsUseCase {
+  MockOpenSettingsUseCase() {
+    _i1.throwOnMissingStub(this);
+  }
+
+  @override
+  _i4.Future<_i2.Either<_i5.Failure, bool>> call({_i8.Params? params}) =>
+      (super.noSuchMethod(Invocation.method(#call, [], {#params: params}),
+              returnValue: Future<_i2.Either<_i5.Failure, bool>>.value(
+                  _FakeEither_0<_i5.Failure, bool>()))
+          as _i4.Future<_i2.Either<_i5.Failure, bool>>);
 }
