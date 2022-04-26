@@ -21,6 +21,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    AppRouter router = GetIt.I();
+
     return MultiBlocProvider(
       providers: [
         BlocProvider<PermissionCubit>(
@@ -40,8 +42,8 @@ class MyApp extends StatelessWidget {
         title: "Find things",
         localizationsDelegates: AppLocalizations.localizationsDelegates,
         supportedLocales: AppLocalizations.supportedLocales,
-        routerDelegate: router.routerDelegate,
-        routeInformationParser: router.routeInformationParser,
+        routerDelegate: router.delegate(),
+        routeInformationParser: router.defaultRouteParser(),
       ),
     );
   }

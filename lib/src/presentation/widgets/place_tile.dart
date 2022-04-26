@@ -1,9 +1,10 @@
+import 'package:auto_route/auto_route.dart';
+import 'package:find_thing/src/core/navigation.dart';
 import 'package:find_thing/src/domain/entities/place.dart';
 import 'package:find_thing/src/presentation/cubits/place_cubit/place_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:go_router/go_router.dart';
 
 class PlaceTile extends StatelessWidget {
   final Place place;
@@ -15,7 +16,7 @@ class PlaceTile extends StatelessWidget {
     return GridTile(
       child: InkWell(
         onLongPress: () => _showBottomSheet(context),
-        onTap: () => context.push("/place/${place.id}", extra: place),
+        onTap: () => context.router.push(MainPlaceRoute(children: [PlaceRoute(place: place, id: place.id)])),
         child: Column(mainAxisSize: MainAxisSize.min,
           children: [const Placeholder(fallbackHeight: 200,), Text(place.name)],
         ),

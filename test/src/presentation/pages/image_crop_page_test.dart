@@ -1,4 +1,3 @@
-import 'dart:typed_data';
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:find_thing/src/domain/use_cases/check_and_ask_permission_use_case.dart';
@@ -11,9 +10,7 @@ import 'package:find_thing/src/presentation/cubits/image_cubit/image_cubit.dart'
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:go_router/src/go_route_match.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class MockImageCubit extends MockCubit<ImageCubitState> implements ImageCubit {
@@ -35,14 +32,14 @@ class MockPermissionCubit extends MockCubit<PermissionCubitState> implements Per
 
 void main(){
   late MockImageCubit imageCubit;
-  late GoRouter router;
+  late AppRouter router;
 
   setUp((){
     imageCubit = MockImageCubit();
   });
 
   initPage(WidgetTester tester) async {
-    router = GoRouter(initialLocation: "/", routes: routes);
+    router = AppRouter();
 
     await tester.pumpWidget(
       MultiBlocProvider(
@@ -56,13 +53,13 @@ void main(){
         child: MaterialApp.router(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          routerDelegate: router.routerDelegate,
-          routeInformationParser: router.routeInformationParser,
+          routerDelegate: router.delegate(),
+          routeInformationParser: router.defaultRouteParser(),
         ),
       ),
     );
     await tester.pumpAndSettle();
-    router.push("/imageCrop", extra: {'xfile': XFile("")});
+    router.navigate(MainImageCropRoute(children: [ImageCropRoute(file: XFile(""))]));
   }
 
   group("check ui displaying",(){
@@ -104,9 +101,7 @@ void main(){
       await tester.tap(cancelButton);
       await tester.pumpAndSettle();
 
-      final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(1));
-      expect(matches.last.fullpath, "/");
+      expect(router.current.name, "PlacesListRoute");
     });
 
     // TODO: transfer to integration test
@@ -120,9 +115,7 @@ void main(){
       await tester.tap(cropButton);
       await tester.pumpAndSettle(const Duration(seconds: 2));
 
-      final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(3));
-      expect(matches.last.fullpath, "/cropImage/setName");
+      expect(router.current.name, "SetNameRoute");
     }, skip: true);
   });
 }

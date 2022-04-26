@@ -1,3 +1,4 @@
+import 'package:find_thing/src/core/navigation.dart';
 import 'package:find_thing/src/data/data_sources/objectbox_database.dart';
 import 'package:find_thing/src/data/data_sources/permission_service.dart';
 import 'package:find_thing/src/data/repositories/database_reposiotry_impl.dart';
@@ -55,4 +56,7 @@ void initInjector(){
   GetIt.I.registerFactory<ImageCubit>(() => ImageCubit(GetIt.I(), GetIt.I(), GetIt.I()));
   GetIt.I.registerFactory<PermissionCubit>(() => PermissionCubit(GetIt.I(), GetIt.I()));
   GetIt.I.registerFactory<PlaceCubit>(() => PlaceCubit(GetIt.I(), GetIt.I(), GetIt.I()));
+
+  // ROUTER
+  GetIt.I.registerSingleton<AppRouter>(AppRouter());
 }

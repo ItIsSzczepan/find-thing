@@ -13,8 +13,6 @@ import 'package:find_thing/src/presentation/widgets/place_tile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:go_router/go_router.dart';
-import 'package:go_router/src/go_route_match.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -46,7 +44,7 @@ void main() {
   late MockImageCubit imageCubit;
   late MockPlaceCubit placeCubit;
   late PermissionCubit permissionCubit;
-  late GoRouter router;
+  late AppRouter router;
   late ObjectBoxDatabase objectBoxDatabase;
 
   setUpAll(() async {
@@ -62,7 +60,7 @@ void main() {
   });
 
   initPage(WidgetTester tester) async {
-    router = GoRouter(initialLocation: "/", routes: routes);
+    router = AppRouter();
 
     await tester.pumpWidget(
       MultiBlocProvider(
@@ -78,8 +76,8 @@ void main() {
         child: MaterialApp.router(
           localizationsDelegates: AppLocalizations.localizationsDelegates,
           supportedLocales: AppLocalizations.supportedLocales,
-          routerDelegate: router.routerDelegate,
-          routeInformationParser: router.routeInformationParser,
+          routerDelegate: router.delegate(),
+          routeInformationParser: router.defaultRouteParser(),
         ),
       ),
     );
@@ -185,11 +183,9 @@ void main() {
       //verify
       verify(() => permissionCubit.checkFile()).called(1);
 
-      final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(2));
       expect(permissionCubit.state, isA<PermissionData>());
-      expect(matches.last.extra, isA<Function>());
-      expect(matches.last.fullpath, "/permission");
+      expect((router.current.args as PermissionRouteArgs).onSuccess, isA<Function>());
+      expect(router.current.name, PermissionRoute.name);
     });
   });
 
@@ -206,11 +202,8 @@ void main() {
       // verify
       verify(() => imageCubit.retrieveImage()).called(1);
 
-      final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(2));
-      expect((matches.last.extra as Map<String,Object>)['xfile'], isA<XFile>());
-      expect(matches.last.fullpath, "/imageCrop");
-    });
+      expect(router.current.path, '/imageCrop');
+        });
 
     testWidgets(
         "page shouldn't redirect if image cubit didn't retrieve lost file",
@@ -225,9 +218,7 @@ void main() {
       // verify
       verify(() => imageCubit.retrieveImage()).called(1);
 
-      final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(1));
-      expect(matches.first.fullpath, "/");
+      expect(router.current.name, PlacesListRoute.name);
     });
 
     testWidgets(
@@ -251,10 +242,8 @@ void main() {
 
       // verify
       verify(() => imageCubit.pickImage(ImageSource.gallery)).called(1);
-      final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(2));
-      expect((matches.last.extra as Map<String,Object>)['xfile'], isA<XFile>());
-      expect(matches.last.fullpath, "/imageCrop");
+
+      expect(router.current.name, MainImageCropRoute.name);
     });
 
     testWidgets("page shouldn't redirect if image wasn't selected from gallery",
@@ -278,9 +267,7 @@ void main() {
       // verify
       verify(() => imageCubit.pickImage(ImageSource.gallery)).called(1);
 
-      final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(1));
-      expect(matches.first.fullpath, "/");
+      expect(router.current.name, PlacesListRoute.name);
     });
 
     testWidgets(
@@ -306,10 +293,7 @@ void main() {
       // verify
       verify(() => imageCubit.pickImage(ImageSource.camera)).called(1);
 
-      final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(2));
-      expect((matches.last.extra as Map<String,Object>)['xfile'], isA<XFile>());
-      expect(matches.last.fullpath, "/imageCrop");
+      expect(router.current.name, MainImageCropRoute.name);
     });
 
     testWidgets("page shouldn't redirect if image wasn't taken from camera",
@@ -321,6 +305,7 @@ void main() {
 
 
       await initPage(tester);
+      await tester.pump();
 
       // act
       await tester.tap(find.byIcon(Icons.add));
@@ -332,9 +317,7 @@ void main() {
       // verify
       verify(() => imageCubit.pickImage(ImageSource.camera)).called(1);
 
-      final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(1));
-      expect(matches.first.fullpath, "/");
+      expect(router.current.name, PlacesListRoute.name);
     });
   });
 
@@ -376,10 +359,7 @@ void main() {
       await tester.tap(firstPlaceTileTitle.first);
       await tester.pumpAndSettle();
 
-      final List<GoRouteMatch> matches = router.routerDelegate.matches;
-      expect(matches, hasLength(2));
-      expect(matches.last.extra, isA<Place>());
-      expect(matches.last.subloc, "/place/${firstPlace.id}");
+      expect(router.current.name, MainPlaceRoute.name);
     });
 
     // TODO: transfer to integration test

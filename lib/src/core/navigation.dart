@@ -1,3 +1,4 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:find_thing/src/domain/entities/place.dart';
 import 'package:find_thing/src/presentation/pages/image_crop_page.dart';
 import 'package:find_thing/src/presentation/pages/note_page.dart';
@@ -6,58 +7,33 @@ import 'package:find_thing/src/presentation/pages/place_page.dart';
 import 'package:find_thing/src/presentation/pages/places_list_page.dart';
 import 'package:find_thing/src/presentation/pages/set_name_page.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 
-final GoRouter router = GoRouter(initialLocation: "/", routes: routes);
+part 'navigation.gr.dart';
 
-final List<GoRoute> routes = [
-  GoRoute(
-      path: "/",
-      builder: (BuildContext context, GoRouterState state) => const PlacesListPage(),
-      routes: <GoRoute>[
-        GoRoute(
-            path: "permission",
-            builder: (BuildContext context, GoRouterState state) =>
-                PermissionPage(
-                  onSuccess: state.extra! as Function,
-                )),
-        GoRoute(
-            path: "imageCrop",
-            builder: (BuildContext context, GoRouterState state) {
-              final params = state.extra! as Map<String,Object>;
-              return ImageCropPage(file: params['xfile'] as XFile);
-            },
-            routes: [
-              GoRoute(
-                  path: "setName",
-                  builder: (BuildContext context, GoRouterState state) {
-                    final params = state.extra! as Map<String,Object>;
-                    return SetNamePage(image: params['image'] as Image);
-                  })
-            ]),
-        GoRoute(path: "places", redirect: (state) => "/"),
-        GoRoute(
-            path: "place/:placeId",
-            builder: (BuildContext context, GoRouterState state) =>
-                PlacePage(place: state.extra! as Place),
-            routes: <GoRoute>[
-              GoRoute(
-                  path: "area/:areaId",
-                  builder: (BuildContext context, GoRouterState state) {
-                    Map<String, dynamic> params =
-                    state.extra! as Map<String, dynamic>;
-                    final String title = params['title'];
-                    final Function(String) onTitleSave = params['onTitleSave'];
-                    final String content = params['content'];
-                    final Function(String) onContentSave = params['onContentSave'];
-
-                    return NotePage(
-                        title: title,
-                        content: content,
-                        onTitleSave: onTitleSave,
-                        onContentSave: onContentSave);
-                  })
-            ])
-      ]),
-];
+@AdaptiveAutoRouter(
+  replaceInRouteName: 'Page,Route',
+  routes: <AutoRoute>[
+    AutoRoute(path: "/", page: PlacesListPage, initial: true),
+    AutoRoute(path: "/permission", page: PermissionPage),
+    AutoRoute(
+        path: "/imageCrop",
+        name: "MainImageCropRoute",
+        page: EmptyRouterPage,
+        children: [
+          AutoRoute(path: "", name: "ImageCropRoute", page: ImageCropPage),
+          AutoRoute(path: "setName", name: "SetNameRoute", page: SetNamePage),
+          RedirectRoute(path: "*", redirectTo: 'PlacesListRoute')
+        ]),
+    AutoRoute(path: '/place', name: "MainPlaceRoute", page: EmptyRouterPage, children: [
+      AutoRoute(
+          path: ":placeId",
+          page: PlacePage,
+          children: [AutoRoute(path: "area/:areaId", page: NotePage)]),
+      RedirectRoute(path: "*", redirectTo: 'PlacesListRoute')
+    ]),
+    RedirectRoute(path: "/*", redirectTo: 'PlacesListRoute')
+  ],
+)
+// extend the generated private router
+class AppRouter extends _$AppRouter {}

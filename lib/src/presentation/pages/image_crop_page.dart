@@ -1,5 +1,6 @@
 import 'dart:typed_data';
 
+import 'package:auto_route/auto_route.dart';
 import 'package:crop_your_image/crop_your_image.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -13,14 +14,6 @@ class ImageCropPage extends StatefulWidget {
 
   @override
   State<ImageCropPage> createState() => _ImageCropPageState();
-}
-
-class _ImageTest extends State<ImageCropPage>{
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold();
-  }
-
 }
 
 class _ImageCropPageState extends State<ImageCropPage> {
@@ -67,7 +60,7 @@ class _ImageCropPageState extends State<ImageCropPage> {
               children: [
                 TextButton.icon(
                     onPressed: () {
-                      context.pop();
+                      context.router.pop();
                     },
                     icon: const Icon(Icons.close),
                     label: Text(AppLocalizations.of(context)!.cancel)),
