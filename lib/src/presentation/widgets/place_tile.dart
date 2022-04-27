@@ -30,7 +30,7 @@ class PlaceTile extends StatelessWidget {
                       : ClipRRect(
                           borderRadius: BorderRadius.circular(15),
                           child: Container(
-                              constraints: BoxConstraints.expand(),
+                              constraints: const BoxConstraints.expand(),
                               child: Ink(
                                   child: Image.file(
                                 File(place.fileLocation!),

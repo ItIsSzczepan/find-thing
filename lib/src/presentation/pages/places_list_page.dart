@@ -30,7 +30,7 @@ class PlacesListPage extends StatelessWidget {
                     if (state is PermissionData) {
                       if (state.permissions[Permissions.file] !=
                           PermissionStatus.granted) {
-                        context.router.push(PermissionRoute(onSuccess: ()=>context.router.replace(PlacesListRoute())));
+                        context.router.push(PermissionRoute(onSuccess: ()=>context.router.replace(const PlacesListRoute())));
                       }
                     }
                     if (state is PermissionFailure) {
@@ -42,7 +42,7 @@ class PlacesListPage extends StatelessWidget {
                   bloc: context.read<ImageCubit>()..retrieveImage(),
                   listener: (context, state) {
                     if (state is ImagePicked) {
-                      context.router.push(MainImageCropRoute(file: state.file, onSuccess: (value){print(value);}));
+                      context.router.push(MainImageCropRoute(file: state.file, onSuccess: (value){}));
                     }
                     if (state is ImageFailure) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -57,7 +57,7 @@ class PlacesListPage extends StatelessWidget {
                   if(state is PlaceFailure) {
                     failureSnackBar(failure: state.failure);
                     context.read<PlaceCubit>().getPlaces();
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
                   if (state is PlaceInitial) {
                     return Center(

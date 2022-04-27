@@ -4,7 +4,6 @@ import 'dart:ui';
 import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/domain/entities/area.dart';
 import 'package:find_thing/src/domain/entities/place.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:image_picker/image_picker.dart';
 

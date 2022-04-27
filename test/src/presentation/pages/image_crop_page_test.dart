@@ -1,4 +1,6 @@
 
+// ignore_for_file: empty_catches
+
 import 'package:bloc_test/bloc_test.dart';
 import 'package:find_thing/src/domain/use_cases/check_and_ask_permission_use_case.dart';
 import 'package:find_thing/src/presentation/cubits/permission_cubit/permission_cubit.dart';
@@ -15,13 +17,13 @@ import 'package:permission_handler/permission_handler.dart';
 
 class MockImageCubit extends MockCubit<ImageCubitState> implements ImageCubit {
   @override
-  ImageCubitState get state => ImageCubitState.empty();
+  ImageCubitState get state => const ImageCubitState.empty();
   @override
   retrieveImage() {}
 }
 class MockPlaceCubit extends MockCubit<PlaceCubitState> implements PlaceCubit {
   @override
-  PlaceCubitState get state => PlaceCubitState.data(stream: Stream.empty());
+  PlaceCubitState get state => const PlaceCubitState.data(stream: Stream.empty());
 }
 class MockPermissionCubit extends MockCubit<PermissionCubitState> implements PermissionCubit {
   @override
@@ -66,7 +68,7 @@ void main(){
     testWidgets("app bar", (WidgetTester tester)async{
       await initPage(tester);
       try {
-        await tester.pumpAndSettle(Duration(seconds: 1));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
       }catch (e){}
 
       final appBar = find.byType(AppBar);
@@ -79,7 +81,7 @@ void main(){
     testWidgets("buttons", (WidgetTester tester)async{
       await initPage(tester);
       try {
-        await tester.pumpAndSettle(Duration(seconds: 1));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
       }catch (e){}
 
       final cropButton = find.text(AppLocalizationsEn().crop);
@@ -94,7 +96,7 @@ void main(){
     testWidgets("tap cancel should pop screen", (WidgetTester tester)async{
       await initPage(tester);
       try {
-        await tester.pumpAndSettle(Duration(seconds: 1));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
       }catch (e){}
 
       final cancelButton = find.text(AppLocalizationsEn().cancel);
@@ -108,7 +110,7 @@ void main(){
     testWidgets("tap crop should push setName screen", (WidgetTester tester)async{
       await initPage(tester);
       try {
-        await tester.pumpAndSettle(Duration(seconds: 1));
+        await tester.pumpAndSettle(const Duration(seconds: 1));
       }catch (e){}
 
       final cropButton = find.text(AppLocalizationsEn().crop);

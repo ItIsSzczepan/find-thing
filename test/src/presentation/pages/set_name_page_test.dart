@@ -1,5 +1,4 @@
 import 'dart:typed_data';
-import 'dart:ui' as ui;
 
 import 'package:bloc_test/bloc_test.dart';
 import 'package:find_thing/src/presentation/cubits/image_cubit/image_cubit.dart';
@@ -11,7 +10,6 @@ import 'package:mocktail/mocktail.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations_en.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import '../../../models.dart';
 
 class MockImageCubit extends MockCubit<ImageCubitState> implements ImageCubit {
   @override
@@ -22,7 +20,7 @@ class MockImageCubit extends MockCubit<ImageCubitState> implements ImageCubit {
 }
 
 class MockFunction extends Mock {
-  void call(bool);
+  void call(bool value);
 }
 
 void main() async{

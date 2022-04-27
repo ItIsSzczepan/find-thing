@@ -4,7 +4,6 @@ import 'package:bloc/bloc.dart';
 import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/domain/use_cases/check_and_ask_permission_use_case.dart';
 import 'package:find_thing/src/domain/use_cases/open_settings_use_case.dart';
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:permission_handler/permission_handler.dart';
 
@@ -37,7 +36,7 @@ class PermissionCubit extends Cubit<PermissionCubitState> {
           (state as PermissionData).permissions;
       stateMap[name] = newValue;
       (state as PermissionData).copyWith(permissions: stateMap);
-      emit(PermissionCubitState.initial());
+      emit(const PermissionCubitState.initial());
       emit(state);
     } else {
       emit(PermissionCubitState.data(permissions: {name: newValue}));
