@@ -1,6 +1,9 @@
+import 'dart:typed_data';
+
 import 'package:auto_route/auto_route.dart';
 import 'package:find_thing/src/domain/entities/place.dart';
 import 'package:find_thing/src/presentation/pages/image_crop_page.dart';
+import 'package:find_thing/src/presentation/pages/image_place_save_wrapper.dart';
 import 'package:find_thing/src/presentation/pages/note_page.dart';
 import 'package:find_thing/src/presentation/pages/permission_page.dart';
 import 'package:find_thing/src/presentation/pages/place_page.dart';
@@ -19,7 +22,7 @@ part 'navigation.gr.dart';
     AutoRoute(
         path: "/imageCrop",
         name: "MainImageCropRoute",
-        page: EmptyRouterPage,
+        page: ImagePlaceSavingWrapper,
         children: [
           AutoRoute(path: "", name: "ImageCropRoute", page: ImageCropPage),
           AutoRoute(path: "setName", name: "SetNameRoute", page: SetNamePage),

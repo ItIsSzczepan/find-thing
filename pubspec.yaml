@@ -19,9 +19,8 @@ dependencies:
   flutter_speed_dial: ^5.1.0
   crop_your_image: ^0.7.2
 #  route
-  go_router: ^3.0.7
   auto_route: ^3.2.4
-  #  internationalization
+#  internationalization
   intl: ^0.17.0
 #  code
   flutter_bloc: ^8.0.1

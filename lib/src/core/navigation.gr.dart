@@ -28,8 +28,11 @@ class _$AppRouter extends RootStackRouter {
           child: PermissionPage(key: args.key, onSuccess: args.onSuccess));
     },
     MainImageCropRoute.name: (routeData) {
+      final args = routeData.argsAs<MainImageCropRouteArgs>();
       return AdaptivePage<dynamic>(
-          routeData: routeData, child: const EmptyRouterPage());
+          routeData: routeData,
+          child: ImagePlaceSavingWrapper(
+              key: args.key, file: args.file, onSuccess: args.onSuccess));
     },
     MainPlaceRoute.name: (routeData) {
       return AdaptivePage<dynamic>(
@@ -39,13 +42,17 @@ class _$AppRouter extends RootStackRouter {
       final args = routeData.argsAs<ImageCropRouteArgs>();
       return AdaptivePage<dynamic>(
           routeData: routeData,
-          child: ImageCropPage(key: args.key, file: args.file));
+          child: ImageCropPage(
+              key: args.key, file: args.file, onCrop: args.onCrop));
     },
     SetNameRoute.name: (routeData) {
       final args = routeData.argsAs<SetNameRouteArgs>();
       return AdaptivePage<dynamic>(
           routeData: routeData,
-          child: SetNamePage(key: args.key, image: args.image));
+          child: SetNamePage(
+              key: args.key,
+              imageDataList: args.imageDataList,
+              onSuccess: args.onSuccess));
     },
     PlaceRoute.name: (routeData) {
       final args = routeData.argsAs<PlaceRouteArgs>();
@@ -134,13 +141,36 @@ class PermissionRouteArgs {
 }
 
 /// generated route for
-/// [EmptyRouterPage]
-class MainImageCropRoute extends PageRouteInfo<void> {
-  const MainImageCropRoute({List<PageRouteInfo>? children})
+/// [ImagePlaceSavingWrapper]
+class MainImageCropRoute extends PageRouteInfo<MainImageCropRouteArgs> {
+  MainImageCropRoute(
+      {Key? key,
+      required XFile file,
+      required dynamic Function(bool) onSuccess,
+      List<PageRouteInfo>? children})
       : super(MainImageCropRoute.name,
-            path: '/imageCrop', initialChildren: children);
+            path: '/imageCrop',
+            args: MainImageCropRouteArgs(
+                key: key, file: file, onSuccess: onSuccess),
+            initialChildren: children);
 
   static const String name = 'MainImageCropRoute';
+}
+
+class MainImageCropRouteArgs {
+  const MainImageCropRouteArgs(
+      {this.key, required this.file, required this.onSuccess});
+
+  final Key? key;
+
+  final XFile file;
+
+  final dynamic Function(bool) onSuccess;
+
+  @override
+  String toString() {
+    return 'MainImageCropRouteArgs{key: $key, file: $file, onSuccess: $onSuccess}';
+  }
 }
 
 /// generated route for
@@ -155,46 +185,61 @@ class MainPlaceRoute extends PageRouteInfo<void> {
 /// generated route for
 /// [ImageCropPage]
 class ImageCropRoute extends PageRouteInfo<ImageCropRouteArgs> {
-  ImageCropRoute({Key? key, required XFile file})
+  ImageCropRoute(
+      {Key? key,
+      required XFile file,
+      required dynamic Function(Uint8List) onCrop})
       : super(ImageCropRoute.name,
-            path: '', args: ImageCropRouteArgs(key: key, file: file));
+            path: '',
+            args: ImageCropRouteArgs(key: key, file: file, onCrop: onCrop));
 
   static const String name = 'ImageCropRoute';
 }
 
 class ImageCropRouteArgs {
-  const ImageCropRouteArgs({this.key, required this.file});
+  const ImageCropRouteArgs(
+      {this.key, required this.file, required this.onCrop});
 
   final Key? key;
 
   final XFile file;
 
+  final dynamic Function(Uint8List) onCrop;
+
   @override
   String toString() {
-    return 'ImageCropRouteArgs{key: $key, file: $file}';
+    return 'ImageCropRouteArgs{key: $key, file: $file, onCrop: $onCrop}';
   }
 }
 
 /// generated route for
 /// [SetNamePage]
 class SetNameRoute extends PageRouteInfo<SetNameRouteArgs> {
-  SetNameRoute({Key? key, required Image image})
+  SetNameRoute(
+      {Key? key,
+      required Uint8List imageDataList,
+      required dynamic Function(bool) onSuccess})
       : super(SetNameRoute.name,
-            path: 'setName', args: SetNameRouteArgs(key: key, image: image));
+            path: 'setName',
+            args: SetNameRouteArgs(
+                key: key, imageDataList: imageDataList, onSuccess: onSuccess));
 
   static const String name = 'SetNameRoute';
 }
 
 class SetNameRouteArgs {
-  const SetNameRouteArgs({this.key, required this.image});
+  const SetNameRouteArgs(
+      {this.key, required this.imageDataList, required this.onSuccess});
 
   final Key? key;
 
-  final Image image;
+  final Uint8List imageDataList;
+
+  final dynamic Function(bool) onSuccess;
 
   @override
   String toString() {
-    return 'SetNameRouteArgs{key: $key, image: $image}';
+    return 'SetNameRouteArgs{key: $key, imageDataList: $imageDataList, onSuccess: $onSuccess}';
   }
 }
 

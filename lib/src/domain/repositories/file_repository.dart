@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
 import 'package:find_thing/src/core/failure.dart';
@@ -10,7 +10,7 @@ abstract class FileRepository{
 
   Future<Either<Failure, XFile>> retrieveLostImage();
 
-  Future<String> saveImage({required Image image, required String uid});
+  Future<String> saveImage({required Uint8List image, required String uid});
 
   Future<void> deleteImage(String path);
 }

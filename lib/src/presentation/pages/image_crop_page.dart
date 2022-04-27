@@ -3,14 +3,14 @@ import 'dart:typed_data';
 import 'package:auto_route/auto_route.dart';
 import 'package:crop_your_image/crop_your_image.dart';
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ImageCropPage extends StatefulWidget {
   final XFile file;
+  final Function(Uint8List) onCrop;
 
-  const ImageCropPage({Key? key, required this.file}) : super(key: key);
+  const ImageCropPage({Key? key, required this.file, required this.onCrop}) : super(key: key);
 
   @override
   State<ImageCropPage> createState() => _ImageCropPageState();
@@ -49,7 +49,7 @@ class _ImageCropPageState extends State<ImageCropPage> {
                         controller: _cropController,
                         image: image,
                         onCropped: (Uint8List value) {
-                          context.go("/imageCrop/setName", extra: {'xfile': widget.file,'image': Image.memory(value)});
+                          widget.onCrop(value);
                         },
                       ),
                   ),

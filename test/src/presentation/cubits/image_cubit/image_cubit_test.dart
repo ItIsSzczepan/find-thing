@@ -9,6 +9,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../../models.dart';
 import 'image_cubit_test.mocks.dart';
 
 @GenerateMocks(
@@ -86,7 +87,7 @@ void main() {
     "cubit should return empty after saving place",
     setUp: () => when(savePlaceUseCase(params: anyNamed('params'))).thenAnswer((realInvocation) async => const Right(true)),
     build: () => imageCubit,
-    act: (cubit) async => cubit.savePlace(name: "test", image: await createTestImage()),
+    act: (cubit) async => cubit.savePlace(name: "test", image: await TestModels().exampleImageData),
     expect: () => [isA<ImageEmpty>()],
       verify: (_) {
         verify(savePlaceUseCase(params: anyNamed('params')));
@@ -99,7 +100,7 @@ void main() {
       "cubit shouldn't return empty if place wasn't save",
       setUp: () => when(savePlaceUseCase(params: anyNamed('params'))).thenAnswer((realInvocation) async => const Right(false)),
       build: () => imageCubit,
-      act: (cubit) async => cubit.savePlace(name: "test", image: await createTestImage()),
+      act: (cubit) async => cubit.savePlace(name: "test", image: await TestModels().exampleImageData),
       expect: () => [isA<ImageFailure>()],
       verify: (_) {
         verify(savePlaceUseCase(params: anyNamed('params')));

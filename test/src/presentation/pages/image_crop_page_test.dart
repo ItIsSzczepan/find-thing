@@ -59,7 +59,7 @@ void main(){
       ),
     );
     await tester.pumpAndSettle();
-    router.navigate(MainImageCropRoute(children: [ImageCropRoute(file: XFile(""))]));
+    router.navigate(MainImageCropRoute(file: XFile(""), onSuccess: (_){}));
   }
 
   group("check ui displaying",(){

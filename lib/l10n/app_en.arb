@@ -31,10 +31,12 @@
   "@openSettings": {
     "description": "Text of button to open application setting in os"
   },
+  "setName": "Set name",
   "remove": "Remove",
   "rename": "Rename",
   "gallery": "Gallery",
   "camera": "Camera",
   "crop": "Crop",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "save": "Save"
 }

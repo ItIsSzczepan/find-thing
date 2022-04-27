@@ -42,7 +42,7 @@ class PlacesListPage extends StatelessWidget {
                   bloc: context.read<ImageCubit>()..retrieveImage(),
                   listener: (context, state) {
                     if (state is ImagePicked) {
-                      context.router.push(MainImageCropRoute(children: [ImageCropRoute(file: state.file)]));
+                      context.router.push(MainImageCropRoute(file: state.file, onSuccess: (_){}));
                     }
                     if (state is ImageFailure) {
                       ScaffoldMessenger.of(context).showSnackBar(

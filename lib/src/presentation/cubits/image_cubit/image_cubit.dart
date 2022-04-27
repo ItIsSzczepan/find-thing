@@ -1,4 +1,4 @@
-import 'dart:ui';
+import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
 import 'package:find_thing/src/core/failure.dart';
@@ -40,7 +40,7 @@ class ImageCubit extends Cubit<ImageCubitState> {
             }));
   }
 
-  Future<bool> savePlace({required String name, required Image image}) async {
+  Future<bool> savePlace({required String name, required Uint8List image}) async {
     bool saved = false;
     final result = await _savePlaceUseCase(
         params: SaveImageParams(image: image, name: name));
