@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:auto_route/auto_route.dart';
+import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/presentation/cubits/image_cubit/image_cubit.dart';
 import 'package:find_thing/src/presentation/widgets/failure_snackbar.dart';
 import 'package:flutter/material.dart';
@@ -19,27 +20,33 @@ class SetNamePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: _buildAppBar(context),
-      body: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          TextField(controller: _textController),
-          Expanded(child: Image.memory(imageDataList)),
-          ElevatedButton.icon(onPressed: (){
-            String name = _textController.text;
-            context.read<ImageCubit>().savePlace(name: name, image: imageDataList).then((value) {
-              if(value){
-                onSuccess(true);
-                context.router.popUntilRoot();
-              }else{
-                ImageCubitState state = context.read<ImageCubit>().state;
-                if(state is ImageFailure){
-                  failureSnackBar(failure: state.failure);
-                }
+      body: SafeArea(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            TextField(controller: _textController),
+            Expanded(child: Image.memory(imageDataList)),
+            ElevatedButton.icon(onPressed: (){
+              String name = _textController.text;
+              if(name.isEmpty){
+                failureSnackBar(failure: Failure("Can't save place with empty name"));
+                return;
               }
-            });
-          }, icon: const Icon(Icons.save), label: Text(AppLocalizations.of(context)!.save))
-        ],
+              context.read<ImageCubit>().savePlace(name: name, image: imageDataList).then((value) {
+                if(value){
+                  onSuccess(true);
+                  context.router.popUntilRoot();
+                }else{
+                  ImageCubitState state = context.read<ImageCubit>().state;
+                  if(state is ImageFailure){
+                    failureSnackBar(failure: state.failure);
+                  }
+                }
+              });
+            }, icon: const Icon(Icons.save), label: Text(AppLocalizations.of(context)!.save))
+          ],
+        ),
       ),
     );
   }
