@@ -1,5 +1,6 @@
 import 'package:find_thing/injector.dart';
 import 'package:find_thing/src/core/navigation.dart';
+import 'package:find_thing/src/data/data_sources/objectbox_database.dart';
 import 'package:find_thing/src/presentation/cubits/area_cubit/area_cubit.dart';
 import 'package:find_thing/src/presentation/cubits/image_cubit/image_cubit.dart';
 import 'package:find_thing/src/presentation/cubits/permission_cubit/permission_cubit.dart';
@@ -9,7 +10,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:get_it/get_it.dart';
 
-void main() {
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
   initInjector();
 
@@ -21,6 +22,9 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    PlaceCubit placeCubit = GetIt.I();
+    GetIt.I<ObjectBoxDatabase>().create().then((value) => placeCubit.getPlaces());
+
     AppRouter router = GetIt.I();
 
     return MultiBlocProvider(
@@ -32,7 +36,7 @@ class MyApp extends StatelessWidget {
           create: (context) => GetIt.I(),
         ),
         BlocProvider<PlaceCubit>(
-          create: (context) => GetIt.I()..getPlaces(),
+          create: (context) => placeCubit,
         ),
         BlocProvider<AreaCubit>(
           create: (context) => GetIt.I(),

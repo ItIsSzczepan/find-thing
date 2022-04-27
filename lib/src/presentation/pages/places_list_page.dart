@@ -42,7 +42,7 @@ class PlacesListPage extends StatelessWidget {
                   bloc: context.read<ImageCubit>()..retrieveImage(),
                   listener: (context, state) {
                     if (state is ImagePicked) {
-                      context.router.push(MainImageCropRoute(file: state.file, onSuccess: (_){}));
+                      context.router.push(MainImageCropRoute(file: state.file, onSuccess: (value){print(value);}));
                     }
                     if (state is ImageFailure) {
                       ScaffoldMessenger.of(context).showSnackBar(
@@ -80,12 +80,16 @@ class PlacesListPage extends StatelessWidget {
                                   .emptyPlacesText));
                         }
 
+                        double padding = 12.0;
                         // build list of places
                         return GridView.builder(
-                            itemCount: places.length,
+                            itemCount: places.length,padding: EdgeInsets.all(padding),
                             gridDelegate:
-                                const SliverGridDelegateWithFixedCrossAxisCount(
-                                    crossAxisCount: 2),
+                                SliverGridDelegateWithFixedCrossAxisCount(
+                                    crossAxisCount: 2,
+                                  mainAxisSpacing: padding,
+                                  crossAxisSpacing: padding
+                                ),
                             itemBuilder: (context, index) =>
                                 PlaceTile(place: places[index]));
                       });

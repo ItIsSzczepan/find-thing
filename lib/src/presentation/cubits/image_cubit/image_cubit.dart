@@ -35,7 +35,7 @@ class ImageCubit extends Cubit<ImageCubitState> {
 
   retrieveImage() {
     _retrieveLostImageUseCase()
-        .then((value) => value.fold((l) => _emitError(l), (r) {
+        .then((value) => value.fold((l) => addError(l), (r) {
               if (r != null) emit(ImageCubitState.picked(r));
             }));
   }

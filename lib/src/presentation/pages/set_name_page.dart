@@ -21,31 +21,39 @@ class SetNamePage extends StatelessWidget {
     return Scaffold(
       appBar: _buildAppBar(context),
       body: SafeArea(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            TextField(controller: _textController),
-            Expanded(child: Image.memory(imageDataList)),
-            ElevatedButton.icon(onPressed: (){
-              String name = _textController.text;
-              if(name.isEmpty){
-                failureSnackBar(failure: Failure("Can't save place with empty name"));
-                return;
-              }
-              context.read<ImageCubit>().savePlace(name: name, image: imageDataList).then((value) {
-                if(value){
-                  onSuccess(true);
-                  context.router.popUntilRoot();
-                }else{
-                  ImageCubitState state = context.read<ImageCubit>().state;
-                  if(state is ImageFailure){
-                    failureSnackBar(failure: state.failure);
-                  }
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              TextField(controller: _textController, decoration: InputDecoration(
+                border: const OutlineInputBorder(),hintText: AppLocalizations.of(context)!.setName
+              ),),
+              Expanded(child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Image.memory(imageDataList),
+              )),
+              ElevatedButton.icon(onPressed: (){
+                String name = _textController.text;
+                if(name.isEmpty){
+                  failureSnackBar(failure: Failure("Can't save place with empty name"));
+                  return;
                 }
-              });
-            }, icon: const Icon(Icons.save), label: Text(AppLocalizations.of(context)!.save))
-          ],
+                context.read<ImageCubit>().savePlace(name: name, image: imageDataList).then((value) {
+                  if(value){
+                    onSuccess(true);
+                    context.router.popUntilRoot();
+                  }else{
+                    ImageCubitState state = context.read<ImageCubit>().state;
+                    if(state is ImageFailure){
+                      failureSnackBar(failure: state.failure);
+                    }
+                  }
+                });
+              }, style: ElevatedButton.styleFrom(minimumSize: const Size.fromHeight(50)),icon: const Icon(Icons.save), label: Text(AppLocalizations.of(context)!.save))
+            ],
+          ),
         ),
       ),
     );

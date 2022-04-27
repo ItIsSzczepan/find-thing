@@ -26,7 +26,7 @@ import 'package:image_picker/image_picker.dart';
 
 void initInjector(){
   // SERVICES
-  GetIt.I.registerSingleton<ObjectBoxDatabase>(ObjectBoxDatabase()..create());
+  GetIt.I.registerSingleton<ObjectBoxDatabase>(ObjectBoxDatabase());
   GetIt.I.registerSingleton<PermissionsService>(PermissionsService());
   GetIt.I.registerSingleton<ImagePicker>(ImagePicker());
 
@@ -55,7 +55,7 @@ void initInjector(){
   GetIt.I.registerFactory<AreaCubit>(() => AreaCubit(GetIt.I(), GetIt.I(), GetIt.I()));
   GetIt.I.registerFactory<ImageCubit>(() => ImageCubit(GetIt.I(), GetIt.I(), GetIt.I()));
   GetIt.I.registerFactory<PermissionCubit>(() => PermissionCubit(GetIt.I(), GetIt.I()));
-  GetIt.I.registerFactory<PlaceCubit>(() => PlaceCubit(GetIt.I(), GetIt.I(), GetIt.I()));
+  GetIt.I.registerFactory<PlaceCubit>(() => PlaceCubit(GetIt.I(), GetIt.I(), GetIt.I())..getPlaces());
 
   // ROUTER
   GetIt.I.registerSingleton<AppRouter>(AppRouter());
