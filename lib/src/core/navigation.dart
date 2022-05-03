@@ -28,13 +28,18 @@ part 'navigation.gr.dart';
           AutoRoute(path: "setName", name: "SetNameRoute", page: SetNamePage),
           RedirectRoute(path: "*", redirectTo: 'PlacesListRoute')
         ]),
-    AutoRoute(path: '/place', name: "MainPlaceRoute", page: EmptyRouterPage, children: [
-      AutoRoute(
-          path: ":placeId",
-          page: PlacePage,
-          children: [AutoRoute(path: "area/:areaId", page: NotePage)]),
-      RedirectRoute(path: "*", redirectTo: 'PlacesListRoute')
-    ]),
+    AutoRoute(
+        path: '/place',
+        name: "MainPlaceRoute",
+        page: EmptyRouterPage,
+        children: [
+          AutoRoute(
+            path: ":placeId",
+            page: PlacePage,
+          ),
+          AutoRoute(path: ":placeId/area/:areaId", page: NotePage),
+          RedirectRoute(path: "*", redirectTo: 'PlacesListRoute')
+        ]),
     RedirectRoute(path: "/*", redirectTo: 'PlacesListRoute')
   ],
 )

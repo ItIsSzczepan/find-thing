@@ -36,7 +36,7 @@
     },
     {
       "id": "4:3255558706845251369",
-      "lastPropertyId": "9:4715804943357064754",
+      "lastPropertyId": "11:239566233939197141",
       "name": "Area",
       "properties": [
         {
@@ -87,6 +87,16 @@
           "flags": 520,
           "indexId": "2:6686247827379195441",
           "relationTarget": "Place"
+        },
+        {
+          "id": "10:3800997138698548123",
+          "name": "color",
+          "type": 9
+        },
+        {
+          "id": "11:239566233939197141",
+          "name": "name",
+          "type": 9
         }
       ],
       "relations": []

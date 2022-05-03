@@ -4,6 +4,7 @@ import 'package:find_thing/src/data/data_sources/permission_service.dart';
 import 'package:find_thing/src/data/repositories/database_reposiotry_impl.dart';
 import 'package:find_thing/src/data/repositories/file_repository_impl.dart';
 import 'package:find_thing/src/data/repositories/permission_reposiotry_impl.dart';
+import 'package:find_thing/src/domain/entities/area.dart';
 import 'package:find_thing/src/domain/repositories/database_repository.dart';
 import 'package:find_thing/src/domain/repositories/file_repository.dart';
 import 'package:find_thing/src/domain/repositories/permission_repository.dart';
@@ -52,7 +53,7 @@ void initInjector(){
   GetIt.I.registerSingleton<RemoveAreaUseCase>(RemoveAreaUseCase(GetIt.I()));
 
   // BLOCs/CUBITs
-  GetIt.I.registerFactory<AreaCubit>(() => AreaCubit(GetIt.I(), GetIt.I(), GetIt.I()));
+  GetIt.I.registerFactoryParam<AreaCubit, Area, void>((area, _) => AreaCubit(area, GetIt.I(), GetIt.I()));
   GetIt.I.registerFactory<ImageCubit>(() => ImageCubit(GetIt.I(), GetIt.I(), GetIt.I()));
   GetIt.I.registerFactory<PermissionCubit>(() => PermissionCubit(GetIt.I(), GetIt.I()));
   GetIt.I.registerFactory<PlaceCubit>(() => PlaceCubit(GetIt.I(), GetIt.I(), GetIt.I())..getPlaces());

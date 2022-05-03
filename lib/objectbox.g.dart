@@ -54,7 +54,7 @@ final _entities = <ModelEntity>[
   ModelEntity(
       id: const IdUid(4, 3255558706845251369),
       name: 'Area',
-      lastPropertyId: const IdUid(9, 4715804943357064754),
+      lastPropertyId: const IdUid(11, 239566233939197141),
       flags: 0,
       properties: <ModelProperty>[
         ModelProperty(
@@ -103,7 +103,17 @@ final _entities = <ModelEntity>[
             type: 11,
             flags: 520,
             indexId: const IdUid(2, 6686247827379195441),
-            relationTarget: 'Place')
+            relationTarget: 'Place'),
+        ModelProperty(
+            id: const IdUid(10, 3800997138698548123),
+            name: 'color',
+            type: 9,
+            flags: 0),
+        ModelProperty(
+            id: const IdUid(11, 239566233939197141),
+            name: 'name',
+            type: 9,
+            flags: 0)
       ],
       relations: <ModelRelation>[],
       backlinks: <ModelBacklink>[])
@@ -211,7 +221,9 @@ ModelDefinition getObjectBoxModel() {
         objectToFB: (Area object, fb.Builder fbb) {
           final contentOffset =
               object.content == null ? null : fbb.writeString(object.content!);
-          fbb.startTable(10);
+          final colorOffset = fbb.writeString(object.color);
+          final nameOffset = fbb.writeString(object.name);
+          fbb.startTable(12);
           fbb.addInt64(0, object.id);
           fbb.addFloat64(1, object.x);
           fbb.addFloat64(2, object.y);
@@ -221,6 +233,8 @@ ModelDefinition getObjectBoxModel() {
           fbb.addOffset(6, contentOffset);
           fbb.addInt64(7, object.dbShape);
           fbb.addInt64(8, object.place.targetId);
+          fbb.addOffset(9, colorOffset);
+          fbb.addOffset(10, nameOffset);
           fbb.finish(fbb.endTable());
           return object.id;
         },
@@ -230,6 +244,8 @@ ModelDefinition getObjectBoxModel() {
 
           final object = Area(
               id: const fb.Int64Reader().vTableGet(buffer, rootOffset, 4, 0),
+              name: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 24, ''),
               content: const fb.StringReader(asciiOptimization: true)
                   .vTableGetNullable(buffer, rootOffset, 16),
               x: const fb.Float64Reader().vTableGet(buffer, rootOffset, 6, 0),
@@ -239,7 +255,9 @@ ModelDefinition getObjectBoxModel() {
               height: const fb.Float64Reader()
                   .vTableGetNullable(buffer, rootOffset, 12),
               radius: const fb.Float64Reader()
-                  .vTableGetNullable(buffer, rootOffset, 14))
+                  .vTableGetNullable(buffer, rootOffset, 14),
+              color: const fb.StringReader(asciiOptimization: true)
+                  .vTableGet(buffer, rootOffset, 22, ''))
             ..dbShape =
                 const fb.Int64Reader().vTableGet(buffer, rootOffset, 18, 0);
           object.place.targetId =
@@ -297,4 +315,10 @@ class Area_ {
   /// see [Area.place]
   static final place =
       QueryRelationToOne<Area, Place>(_entities[1].properties[8]);
+
+  /// see [Area.color]
+  static final color = QueryStringProperty<Area>(_entities[1].properties[9]);
+
+  /// see [Area.name]
+  static final name = QueryStringProperty<Area>(_entities[1].properties[10]);
 }

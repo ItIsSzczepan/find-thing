@@ -91,12 +91,9 @@ class _$AppRouter extends RootStackRouter {
         ]),
         RouteConfig(MainPlaceRoute.name, path: '/place', children: [
           RouteConfig(PlaceRoute.name,
-              path: ':placeId',
-              parent: MainPlaceRoute.name,
-              children: [
-                RouteConfig(NoteRoute.name,
-                    path: 'area/:areaId', parent: PlaceRoute.name)
-              ]),
+              path: ':placeId', parent: MainPlaceRoute.name),
+          RouteConfig(NoteRoute.name,
+              path: ':placeId/area/:areaId', parent: MainPlaceRoute.name),
           RouteConfig('*#redirect',
               path: '*',
               parent: MainPlaceRoute.name,
@@ -246,16 +243,11 @@ class SetNameRouteArgs {
 /// generated route for
 /// [PlacePage]
 class PlaceRoute extends PageRouteInfo<PlaceRouteArgs> {
-  PlaceRoute(
-      {Key? key,
-      required Place place,
-      required int id,
-      List<PageRouteInfo>? children})
+  PlaceRoute({Key? key, required Place place, required int id})
       : super(PlaceRoute.name,
             path: ':placeId',
             args: PlaceRouteArgs(key: key, place: place, id: id),
-            rawPathParams: {'placeId': id},
-            initialChildren: children);
+            rawPathParams: {'placeId': id});
 
   static const String name = 'PlaceRoute';
 }
@@ -286,7 +278,7 @@ class NoteRoute extends PageRouteInfo<NoteRouteArgs> {
       required dynamic Function(String) onTitleSave,
       required dynamic Function(String) onContentSave})
       : super(NoteRoute.name,
-            path: 'area/:areaId',
+            path: ':placeId/area/:areaId',
             args: NoteRouteArgs(
                 key: key,
                 id: id,
