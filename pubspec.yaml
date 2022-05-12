@@ -16,10 +16,10 @@ dependencies:
     sdk: flutter
   cupertino_icons: ^1.0.4
 #  ui
-  flutter_speed_dial: ^5.1.0
+  flutter_speed_dial: ^6.0.0
   crop_your_image: ^0.7.2
 #  route
-  auto_route: ^3.2.4
+  auto_route: ^4.0.1
 #  internationalization
   intl: ^0.17.0
 #  code
@@ -27,25 +27,25 @@ dependencies:
   dartz: ^0.10.1
   equatable: ^2.0.3
   get_it: ^7.2.0
-  objectbox: ^1.4.1
+  objectbox: ^1.5.0
   objectbox_flutter_libs: any
   freezed_annotation: ^1.0.1
   uuid: ^3.0.6
 #  test
   mockito: ^5.1.0
 #  device
-  image_picker: ^0.8.5
-  path_provider: ^2.0.9
+  image_picker: ^0.8.5+2
+  path_provider: ^2.0.10
   permission_handler: ^9.2.0
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^1.0.4
+  flutter_lints: ^2.0.1
   build_runner: ^2.1.10
   bloc_test: ^9.0.3
   objectbox_generator: any
-  auto_route_generator: ^3.2.3
+  auto_route_generator: ^4.0.0
   freezed: ">=1.0.0 <1.1.1"
 
 

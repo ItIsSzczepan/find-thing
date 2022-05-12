@@ -18,6 +18,7 @@ class ImageCropPage extends StatefulWidget {
 
 class _ImageCropPageState extends State<ImageCropPage> {
   late Uint8List image = Uint8List(0);
+  bool loading = false;
 
   final _cropController = CropController();
 
@@ -38,40 +39,52 @@ class _ImageCropPageState extends State<ImageCropPage> {
     return Scaffold(
       appBar: _appBar(context),
       body: SafeArea(
-        child: Column(
+        child: Stack(
           children: [
-            // ignore: unnecessary_null_comparison
-            image.isNotEmpty
-                ? Expanded(
-                  child: SizedBox(
-                    child: Crop(
-                      baseColor: Colors.white,
-                        controller: _cropController,
-                        image: image,
-                        onCropped: (Uint8List value) {
-                          widget.onCrop(value);
-                        },
-                      ),
-                  ),
-                )
-                : const CircularProgressIndicator(),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
+            Column(
               children: [
-                TextButton.icon(
-                    onPressed: () {
-                      context.router.pop();
-                    },
-                    icon: const Icon(Icons.close),
-                    label: Text(AppLocalizations.of(context)!.cancel)),
-                TextButton.icon(
-                    onPressed: () {
-                      _cropController.crop();
-                    },
-                    icon: const Icon(Icons.crop),
-                    label: Text(AppLocalizations.of(context)!.crop))
+                // ignore: unnecessary_null_comparison
+                image.isNotEmpty
+                    ? Expanded(
+                      child: SizedBox(
+                        child: Crop(
+                          baseColor: Colors.white,
+                            controller: _cropController,
+                            image: image,
+                            onCropped: (Uint8List value) {
+                              setState((){
+                                loading = false;
+                              });
+                              widget.onCrop(Uint8List(0));
+                              widget.onCrop(value);
+                            },
+                          ),
+                      ),
+                    )
+                    : const CircularProgressIndicator(),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    TextButton.icon(
+                        onPressed: () {
+                          context.router.pop();
+                        },
+                        icon: const Icon(Icons.close),
+                        label: Text(AppLocalizations.of(context)!.cancel)),
+                    TextButton.icon(
+                        onPressed: () {
+                          _cropController.crop();
+                          setState((){
+                            loading = true;
+                          });
+                        },
+                        icon: const Icon(Icons.crop),
+                        label: Text(AppLocalizations.of(context)!.crop))
+                  ],
+                )
               ],
-            )
+            ),
+            loading ? const Center(child: CircularProgressIndicator()) : Container(),
           ],
         ),
       ),
@@ -80,6 +93,9 @@ class _ImageCropPageState extends State<ImageCropPage> {
 
   PreferredSizeWidget _appBar(BuildContext context) {
     return AppBar(
+      leading: BackButton(
+        onPressed: () => context.router.pop(),
+      ),
       title: Text(AppLocalizations.of(context)!.cropImageTitle),
     );
   }

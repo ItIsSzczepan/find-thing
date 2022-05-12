@@ -17,6 +17,43 @@ class NotePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container();
+    TextEditingController contentController =
+        TextEditingController(text: content == "null" ? "" : content);
+    return Scaffold(
+      appBar: _buildAppBar(context),
+      body: SafeArea(
+        child: TextField(
+          controller: contentController,
+          expands: true,
+          minLines: null,
+          maxLines: null,
+          decoration: InputDecoration(
+            hintText: "Enter content here",
+          ),
+          onChanged: (text) {
+            onContentSave(text);
+          },
+        ),
+      ),
+    );
+  }
+
+  PreferredSizeWidget _buildAppBar(BuildContext context) {
+    TextEditingController titleController = TextEditingController(text: title ?? "");
+    return AppBar(
+      leading: BackButton(
+        onPressed: context.router.pop,
+      ),
+      title: TextField(
+        decoration: const InputDecoration(
+          border: InputBorder.none,
+          hintText: "Enter title"
+        ),
+        controller: titleController,
+        onChanged: (text) {
+          onTitleSave(text);
+        },
+      ),
+    );
   }
 }

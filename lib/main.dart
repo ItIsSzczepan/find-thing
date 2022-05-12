@@ -48,6 +48,7 @@ class MyApp extends StatelessWidget {
         supportedLocales: AppLocalizations.supportedLocales,
         routerDelegate: router.delegate(),
         routeInformationParser: router.defaultRouteParser(),
+        theme: ThemeData(useMaterial3: true),
       ),
     );
   }

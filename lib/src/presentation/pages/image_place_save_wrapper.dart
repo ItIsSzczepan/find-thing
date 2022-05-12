@@ -19,7 +19,7 @@ class _ImagePlaceSavingWrapperState extends State<ImagePlaceSavingWrapper> {
   Uint8List imageDataList = Uint8List(0);
 
   @override
-  Widget build(BuildContext context) => AutoRouter.declarative(routes: (_){
+  Widget build(BuildContext context) => AutoRouter.declarative(onNavigate: (matches){if(matches.last != SetNameRoute) imageDataList = Uint8List(0);},routes: (_){
     return [
       ImageCropRoute(file: widget.file, onCrop: (value){
         setState(() {

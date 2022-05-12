@@ -25,6 +25,7 @@ class PlacePage extends StatefulWidget {
 
 class _PlacePageState extends State<PlacePage> {
   int editAreaId = -1;
+  Area? editAreaObj;
   GlobalKey<AreaWidgetState>? areaKey;
 
   @override
@@ -41,12 +42,8 @@ class _PlacePageState extends State<PlacePage> {
         alignment: Alignment.center,
         children: [_image, ..._buildAreas(context)],
       )),
-      bottomNavigationBar: editAreaId != -1
-          ? const BottomAppBar(
-              shape: CircularNotchedRectangle(),
-              child: Text("bottomappbar"),
-            )
-          : null,
+      bottomNavigationBar:
+          editAreaId != -1 ? _buildBottomBar(context, editAreaId) : null,
     );
   }
 
@@ -94,8 +91,12 @@ class _PlacePageState extends State<PlacePage> {
               id: area.id,
               title: area.name,
               content: area.content.toString(),
-              onTitleSave: (value) {},
-              onContentSave: (value) {}));
+              onTitleSave: (value) {
+                cubit.title(value);
+              },
+              onContentSave: (value) {
+                cubit.content(value);
+              }));
         },
         width: area.width!,
         maxHeight: maxHeight,
@@ -105,9 +106,11 @@ class _PlacePageState extends State<PlacePage> {
           if (editAreaId == area.id) {
             setState(() {
               editAreaId = -1;
+              editAreaObj = null;
             });
           } else {
             setState(() {
+              editAreaObj = area;
               editAreaId = area.id;
             });
           }
@@ -117,5 +120,27 @@ class _PlacePageState extends State<PlacePage> {
     }
 
     return list;
+  }
+
+  Widget _buildBottomBar(BuildContext context, int areaId) {
+    return BottomAppBar(
+      shape: const CircularNotchedRectangle(),
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            IconButton( onPressed: (){
+              AreaCubit cubit = GetIt.I<AreaCubit>(param1: editAreaObj!);
+              cubit.remove();
+              setState((){
+                widget.place.areas.remove(editAreaObj!);
+                editAreaId = -1;
+                editAreaObj = null;
+              });
+            }, icon: const Icon(Icons.delete),)
+          ],
+        ),
+      ),
+    );
   }
 }
