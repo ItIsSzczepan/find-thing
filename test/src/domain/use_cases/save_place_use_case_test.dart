@@ -11,6 +11,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import '../../../models.dart';
 import 'save_place_use_case_test.mocks.dart';
 
 @GenerateMocks([FileRepository, DatabaseRepository])
@@ -49,7 +50,7 @@ void main() {
 
     final result = await useCase(
         params: SaveImageParams(
-            image: await createTestImage(), name: "test_image"));
+            image: await TestModels().exampleImageData, name: "test_image"));
 
     expect(result, const Right(true));
     expect(testFileUid, testDBUid);
@@ -64,7 +65,7 @@ void main() {
 
     final result = await useCase(
         params: SaveImageParams(
-            image: await createTestImage(), name: "test_image"));
+            image: await TestModels().exampleImageData, name: "test_image"));
 
     expect(result, Left(Failure("Exception: Can't save data")));
     verifyNever(_databaseRepository.removePlace(any));
@@ -88,7 +89,7 @@ void main() {
 
     final result = await useCase(
         params: SaveImageParams(
-            image: await createTestImage(), name: "test_image"));
+            image: await TestModels().exampleImageData, name: "test_image"));
 
     expect(result, Left(Failure("StdoutException: can't save image")));
     verify(_databaseRepository.removePlace(any)).called(1);
@@ -114,7 +115,7 @@ void main() {
 
     final result = await useCase(
         params: SaveImageParams(
-            image: await createTestImage(), name: "test_image"));
+            image: await TestModels().exampleImageData, name: "test_image"));
 
     expect(result, Left(Failure("Exception: Can't save data to db")));
     verify(_databaseRepository.removePlace(any)).called(1);

@@ -11,7 +11,7 @@ class DatabaseRepositoryImpl extends DatabaseRepository {
   @override
   Future<Place> createNewPlace({required String name}) async {
     Place newPlace = Place(name: name);
-    final newPlaceId = await _objectBoxDatabase.placeDao.save(newPlace);
+    final newPlaceId = _objectBoxDatabase.placeDao.save(newPlace);
     newPlace = await _objectBoxDatabase.placeDao.get(newPlaceId);
 
     return newPlace;

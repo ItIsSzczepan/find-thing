@@ -56,7 +56,7 @@ void main() {
           .thenAnswer((realInvocation) async => const Right(false)),
       build: () => placeCubit,
       act: (cubit) => cubit.edit(TestModels().examplePlace),
-      expect: () => [isA<PlaceFailure>()],
+      expect: () => [],
       verify: (_) {
         verify(mockEditPlaceUseCase(params: anyNamed("params")));
       });
@@ -77,7 +77,7 @@ void main() {
           .thenAnswer((realInvocation) async => const Right(false)),
       build: () => placeCubit,
       act: (cubit) => cubit.remove(TestModels().examplePlace.id),
-      expect: () => [isA<PlaceFailure>()],
+      expect: () => [],
       verify: (_) {
         verify(mockRemovePlaceUseCase(params: anyNamed("params")));
       });

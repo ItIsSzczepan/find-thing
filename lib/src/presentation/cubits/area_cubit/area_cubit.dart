@@ -3,6 +3,7 @@ import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/domain/entities/area.dart';
 import 'package:find_thing/src/domain/use_cases/remove_area_use_case.dart';
 import 'package:find_thing/src/domain/use_cases/save_area_use_case.dart';
+import 'package:flutter/foundation.dart';
 
 class AreaCubit extends Cubit<Area> {
   Area _area;
@@ -45,6 +46,12 @@ class AreaCubit extends Cubit<Area> {
   content(String content) {
     Area modifyArea = _area;
     modifyArea.content = content;
+    _edit(modifyArea);
+  }
+
+  title(String title) {
+    Area modifyArea = _area;
+    modifyArea.name = title;
     _edit(modifyArea);
   }
 

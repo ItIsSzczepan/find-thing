@@ -3,7 +3,7 @@
 // Do not manually edit this file.
 
 import 'dart:async' as _i5;
-import 'dart:ui' as _i8;
+import 'dart:typed_data' as _i8;
 
 import 'package:dartz/dartz.dart' as _i2;
 import 'package:find_thing/src/core/failure.dart' as _i6;
@@ -51,7 +51,7 @@ class MockFileRepository extends _i1.Mock implements _i4.FileRepository {
                   _FakeEither_0<_i6.Failure, _i7.XFile>()))
           as _i5.Future<_i2.Either<_i6.Failure, _i7.XFile>>);
   @override
-  _i5.Future<String> saveImage({_i8.Image? image, String? uid}) =>
+  _i5.Future<String> saveImage({_i8.Uint8List? image, String? uid}) =>
       (super.noSuchMethod(
           Invocation.method(#saveImage, [], {#image: image, #uid: uid}),
           returnValue: Future<String>.value('')) as _i5.Future<String>);

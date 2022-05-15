@@ -1,5 +1,5 @@
 import 'dart:io';
-import 'dart:ui';
+import 'dart:typed_data';
 
 import 'package:dartz/dartz.dart';
 import 'package:find_thing/src/core/constant.dart';
@@ -43,14 +43,11 @@ class FileRepositoryImpl implements FileRepository{
   }
 
   @override
-  Future<String> saveImage({required Image image, required String uid}) async {
+  Future<String> saveImage({required Uint8List image, required String uid}) async {
     String filePath = await _getFilePath(uid);
 
-    var imageBytes = await image.toByteData(format: ImageByteFormat.png);
-    List<int> imageIntListData = imageBytes!.buffer.asInt8List();
-
     File newFile = File(filePath);
-    await newFile.writeAsBytes(imageIntListData);
+    await newFile.writeAsBytes(image);
 
     return filePath;
   }

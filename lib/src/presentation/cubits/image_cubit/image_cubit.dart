@@ -1,7 +1,6 @@
-import 'dart:ui';
+import 'dart:typed_data';
 
 import 'package:bloc/bloc.dart';
-import 'package:equatable/equatable.dart';
 import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/core/params.dart';
 import 'package:find_thing/src/domain/use_cases/retrieve_lost_image_use_case.dart';
@@ -36,12 +35,12 @@ class ImageCubit extends Cubit<ImageCubitState> {
 
   retrieveImage() {
     _retrieveLostImageUseCase()
-        .then((value) => value.fold((l) => _emitError(l), (r) {
+        .then((value) => value.fold((l) => addError(l), (r) {
               if (r != null) emit(ImageCubitState.picked(r));
             }));
   }
 
-  Future<bool> savePlace({required String name, required Image image}) async {
+  Future<bool> savePlace({required String name, required Uint8List image}) async {
     bool saved = false;
     final result = await _savePlaceUseCase(
         params: SaveImageParams(image: image, name: name));

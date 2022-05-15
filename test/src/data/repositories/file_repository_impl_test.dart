@@ -111,7 +111,7 @@ void main() {
   group("save image", (){
     String filePath = "";
     test("should save file", () async {
-      final String result = await fileRepositoryImpl.saveImage(image: await createTestImage(), uid: "123123123");
+      final String result = await fileRepositoryImpl.saveImage(image: await TestModels().exampleImageData, uid: "123123123");
 
       expect(File(result).existsSync(), true);
       filePath = result;

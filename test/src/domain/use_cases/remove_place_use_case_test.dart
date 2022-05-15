@@ -1,5 +1,4 @@
 import 'package:dartz/dartz.dart';
-import 'package:find_thing/src/core/failure.dart';
 import 'package:find_thing/src/domain/repositories/database_repository.dart';
 import 'package:find_thing/src/domain/use_cases/remove_place_use_case.dart';
 import 'package:flutter_test/flutter_test.dart';

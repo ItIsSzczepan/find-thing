@@ -1,9 +1,9 @@
-import 'dart:ui';
+import 'dart:typed_data';
 
 abstract class Params{}
 
 class SaveImageParams extends Params{
-  Image image;
+  Uint8List image;
   String name;
 
   SaveImageParams({required this.image, required this.name});

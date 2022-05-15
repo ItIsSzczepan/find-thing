@@ -11,4 +11,9 @@ class PermissionRepositoryImpl extends PermissionRepository{
   Future<PermissionStatus> check(Permission permission) async {
     return await _permissionsService.request(permission);
   }
+
+  @override
+  Future<bool> openSettings() async {
+    return await _permissionsService.openAppSettings();
+  }
 }

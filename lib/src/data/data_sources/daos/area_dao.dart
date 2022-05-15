@@ -8,9 +8,9 @@ class AreaDao {
 
   get(int id) => _box.get(id);
 
-  save(Area area) => _box.put(area);
+  int save(Area area) => _box.put(area);
 
-  remove(int id) => _box.remove(id);
+  bool remove(int id) => _box.remove(id);
 
   removeManyAreas(List<int> ids) => _box.removeMany(ids);
 }

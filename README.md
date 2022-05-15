@@ -1,16 +1,17 @@
-# find_thing
+# Find things
 
-Application for localization things in home
+**Simple mobile app to remember things you have in shelfs.**
 
-## Getting Started
+<img src="https://imgur.com/SDZON5e.gif" width="200" > <img src="https://imgur.com/MqDSAJ6.gif" width="200" > <img src="https://imgur.com/APDsJTu.gif" width="200" > <img src="https://imgur.com/yIVnY1s.gif" width="200" >  
 
-This project is a starting point for a Flutter application.
+**Stack:** Flutter, Bloc, Freezed, ObjectBox, Autoroute, get_it.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+TODO:
+:black_square_button: Add chaning area color
+:black_square_button: Add improvment text editor with lists
+:black_square_button: Diffrents shapes of Area
+:black_square_button: Add Search
+:black_square_button: Alert before removing
+FIX:
+:black_square_button: Can't crop secound time back to croping
+:black_square_button: Area move and resize paiting

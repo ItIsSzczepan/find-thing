@@ -1,6 +1,7 @@
 import 'package:bloc_test/bloc_test.dart';
 import 'package:dartz/dartz.dart';
 import 'package:find_thing/src/domain/use_cases/check_and_ask_permission_use_case.dart';
+import 'package:find_thing/src/domain/use_cases/open_settings_use_case.dart';
 import 'package:find_thing/src/presentation/cubits/permission_cubit/permission_cubit.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/annotations.dart';
@@ -10,14 +11,16 @@ import 'package:permission_handler/permission_handler.dart';
 import '../../../../models.dart';
 import 'permissions_cubit_test.mocks.dart';
 
-@GenerateMocks([CheckAndAskPermissionUseCase])
+@GenerateMocks([CheckAndAskPermissionUseCase, OpenSettingsUseCase])
 void main() {
   late PermissionCubit cubit;
   late MockCheckAndAskPermissionUseCase mockUseCase;
+  late MockOpenSettingsUseCase mockOpenSettingsUseCase;
 
   setUp(() {
     mockUseCase = MockCheckAndAskPermissionUseCase();
-    cubit = PermissionCubit(mockUseCase);
+    mockOpenSettingsUseCase= MockOpenSettingsUseCase();
+    cubit = PermissionCubit(mockUseCase, mockOpenSettingsUseCase);
   });
 
   test("cubit should contain initial state at beginning", () {

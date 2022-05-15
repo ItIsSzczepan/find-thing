@@ -8,11 +8,11 @@ class PlaceDao {
 
   get(int id) => _box.get(id);
 
-  getAll() => _box.getAll();
+  List<Place> getAll() => _box.getAll();
 
-  save(Place place) => _box.put(place);
+  int save(Place place) => _box.put(place);
 
-  remove(int id) => _box.remove(id);
+  bool remove(int id) => _box.remove(id);
 
-  Stream<Query<Place>> get allPlacesStream => _box.query(Place_.id > 0).watch(triggerImmediately: true);
+  Stream<Query<Place>> get allPlacesStream => _box.query().watch(triggerImmediately: true).asBroadcastStream();
 }
