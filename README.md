@@ -2,7 +2,7 @@
 
 **Simple mobile app to remember things you have in shelfs.**
 
-<img src="https://imgur.com/tUecQm4.gif" width="200" > <img src="https://imgur.com/MqDSAJ6.gif" width="200" > <img src="https://imgur.com/APDsJTu.gif" width="200" > <img src="https://imgur.com/yIVnY1s.gif" width="200" >  
+<img src="https://imgur.com/EVmetwc.gif" width="200"> <img src="https://imgur.com/MqDSAJ6.gif" width="200" > <img src="https://imgur.com/APDsJTu.gif" width="200" > <img src="https://imgur.com/yIVnY1s.gif" width="200" >  
 
 **Stack:** Flutter, Bloc, Freezed, ObjectBox, Autoroute, get_it.
 
